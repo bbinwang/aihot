@@ -1,0 +1,24 @@
+{
+  "name": "ai-insights",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "vitest run tests/smoke-0930.test.ts"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.14",
+    "node-html-parser": "^9.0.4",
+    "nuxt": "^3.21.11"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.1"
+  }
+}

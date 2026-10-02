@@ -1,0 +1,941 @@
+[
+  {
+    "id": "run-muppzvof-zzzf",
+    "trigger": "cron",
+    "startedAt": "2026-10-01T15:59:59.007Z",
+    "finishedAt": "2026-10-01T16:12:37.326Z",
+    "durationMs": 758319,
+    "discovered": 6,
+    "published": 6,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "上百个 Agent 同时写代码，该怎么协作？Cloudflare 想让你造下一代 Git 平台",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-next-git-platform/",
+        "status": "published",
+        "slug": "cloudflare-next-git-platform",
+        "upstreamUrl": "https://blog.cloudflare.com/next-git-platform-on-cloudflare/",
+        "sourceName": "Cloudflare",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Ideogram 4.5：让 AI 连续改图，少动你没要求改的地方 主打“高精度局部编辑”与“超强一致性”的图像编辑模型",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/ideogram-4-5/",
+        "status": "published",
+        "slug": "ideogram-4-5",
+        "upstreamUrl": "https://ideogram.ai/models/4.5",
+        "sourceName": "Ideogram",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "Google 发布Gemini 4 Argon：综合评分超越GPT-6 Astra、Claude Fable 5.1 以及 Claude Opus 5.5",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-4-argon/",
+        "status": "published",
+        "slug": "gemini-4-argon",
+        "upstreamUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        "sourceName": "Google",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Google Flow 的 10 条视频创作技巧：让 Gemini Omni 听懂你的镜头要求",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/flow-gemini-omni-prompt-guide/",
+        "status": "published",
+        "slug": "flow-gemini-omni-prompt-guide",
+        "upstreamUrl": "https://x.com/FlowbyGoogle/status/2105398907702595802",
+        "sourceName": "Google Flow",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "Anthropic 实测 GLM-5.3：是第一个展现出实质性漏洞利用能力的开重模型 水平和 Claude Mythos Preview 接近",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/glm-5-3-cyber-capabilities/",
+        "status": "published",
+        "slug": "glm-5-3-cyber-capabilities",
+        "upstreamUrl": "https://www.anthropic.com/research/glm-5-3-and-the-spread-of-advanced-cyber-capabilities",
+        "sourceName": "Anthropic",
+        "resolution": "read-original"
+      },
+      {
+        "title": "美国政府搞了个类似苹果的发布会：发布America.gov 把 2.9 万个网站，换成了一个 AI 聊天框",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/america-gov-launch/",
+        "status": "published",
+        "slug": "america-gov-launch",
+        "upstreamUrl": "https://www.whitehouse.gov/fact-sheets/2026/09/fact-sheet-president-donald-j-trump-streamlines-access-to-government-services-through-america-gov/",
+        "sourceName": "The White House",
+        "resolution": "read-original"
+      }
+    ]
+  },
+  {
+    "id": "run-mup459si-nv3o",
+    "trigger": "manual",
+    "startedAt": "2026-10-01T05:48:19.026Z",
+    "finishedAt": "2026-10-01T05:50:37.442Z",
+    "durationMs": 138416,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 4,
+    "items": [
+      {
+        "title": "豆包创意设计操作手册：从一张参考图做到整套可改的设计",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/doubao-creative-design-upgrade/",
+        "status": "published",
+        "slug": "doubao-creative-design-upgrade",
+        "upstreamUrl": "https://bytedance.larkoffice.com/wiki/PPi6wZ6tWiVLWckmEnOcL3ynnSg",
+        "sourceName": "豆包",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "OpenAI 发布全天候个人Agent ：Dot  主动跟进你的目标 可以同时管理你的工作和家庭事物",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-dots/",
+        "status": "skipped"
+      },
+      {
+        "title": "TypeSafe 创始人讲 Jev：Jev 到底是什么？AI 聪明得离谱，自动化到底去哪了？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/typesafe-jev-a16z/",
+        "status": "skipped"
+      },
+      {
+        "title": "OpenAI DevDay 2026 的 25 项更新：会自己干活的 Dots、五分之一价的新模型、500 美元的 Pro",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-devday-2026-recap/",
+        "status": "skipped"
+      },
+      {
+        "title": "Cloudflare 发布 EmDash 1.0，Agent 友好的开源 CMS",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-emdash-plugin-registry/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mup2vzfh-xhbh",
+    "trigger": "manual",
+    "startedAt": "2026-10-01T05:13:06.077Z",
+    "finishedAt": "2026-10-01T05:19:45.712Z",
+    "durationMs": 399635,
+    "discovered": 4,
+    "published": 3,
+    "failed": 1,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "OpenAI 发布全天候个人Agent ：Dot  主动跟进你的目标 可以同时管理你的工作和家庭事物",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-dots/",
+        "status": "published",
+        "slug": "openai-dots-2",
+        "upstreamUrl": "https://openai.com/zh-Hans-CN/index/introducing-dots/",
+        "sourceName": "OpenAI",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "TypeSafe 创始人讲 Jev：Jev 到底是什么？AI 聪明得离谱，自动化到底去哪了？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/typesafe-jev-a16z/",
+        "status": "published",
+        "slug": "typesafe-jev-a16z-2",
+        "upstreamUrl": "https://youtu.be/Ut3LOjKNJaE",
+        "sourceName": "a16z",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "OpenAI DevDay 2026 的 25 项更新：会自己干活的 Dots、五分之一价的新模型、500 美元的 Pro",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-devday-2026-recap/",
+        "status": "published",
+        "slug": "openai-devday-2026-recap-2",
+        "upstreamUrl": "https://openai.com/zh-Hans-CN/index/devday-2026-recap/",
+        "sourceName": "OpenAI",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "豆包创意设计操作手册：从一张参考图做到整套可改的设计",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/doubao-creative-design-upgrade/",
+        "status": "failed",
+        "upstreamUrl": "https://bytedance.larkoffice.com/wiki/PPi6wZ6tWiVLWckmEnOcL3ynnSg",
+        "sourceName": "豆包",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed;分级兜底亦失败: CDP 渲染失败: Command failed: ego-browser nodejs -e const task = await taskSpace(\"aihot-aggregator\")\nconst page = task.page(\"p1\")\nawait page.goto(\"https://bytedance.larkoffice.com/wiki/PPi6wZ6tWiVLWckmEnOcL3ynnSg\","
+      },
+      {
+        "title": "Cloudflare 发布 EmDash 1.0，Agent 友好的开源 CMS",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-emdash-plugin-registry/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-muoak10b",
+    "trigger": "cron",
+    "startedAt": "2026-09-30T15:59:59.003Z",
+    "finishedAt": "2026-09-30T16:09:35.881Z",
+    "durationMs": 576878,
+    "discovered": 4,
+    "published": 1,
+    "failed": 3,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "OpenAI 发布全天候个人Agent ：Dot  主动跟进你的目标 可以同时管理你的工作和家庭事物",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-dots/",
+        "status": "failed",
+        "upstreamUrl": "https://openai.com/zh-Hans-CN/index/introducing-dots/",
+        "sourceName": "OpenAI",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "TypeSafe 创始人讲 Jev：Jev 到底是什么？AI 聪明得离谱，自动化到底去哪了？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/typesafe-jev-a16z/",
+        "status": "failed",
+        "upstreamUrl": "https://youtu.be/Ut3LOjKNJaE",
+        "sourceName": "a16z",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "OpenAI DevDay 2026 的 25 项更新：会自己干活的 Dots、五分之一价的新模型、500 美元的 Pro",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-devday-2026-recap/",
+        "status": "failed",
+        "upstreamUrl": "https://openai.com/zh-Hans-CN/index/devday-2026-recap/",
+        "sourceName": "OpenAI",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "Cloudflare 发布 EmDash 1.0，Agent 友好的开源 CMS",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-emdash-plugin-registry/",
+        "status": "published",
+        "slug": "cloudflare-emdash-plugin-registry-2",
+        "upstreamUrl": "https://blog.cloudflare.com/emdash-cms-plugin-registry/",
+        "sourceName": "Cloudflare",
+        "resolution": "read-original"
+      },
+      {
+        "title": "豆包创意设计操作手册：从一张参考图做到整套可改的设计",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/doubao-creative-design-upgrade/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mumv46cb",
+    "trigger": "cron",
+    "startedAt": "2026-09-29T15:59:59.003Z",
+    "finishedAt": "2026-09-29T16:04:42.285Z",
+    "durationMs": 283282,
+    "discovered": 2,
+    "published": 1,
+    "failed": 1,
+    "skipped": 8,
+    "items": [
+      {
+        "title": "豆包创意设计操作手册：从一张参考图做到整套可改的设计",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/doubao-creative-design-upgrade/",
+        "status": "failed",
+        "upstreamUrl": "https://bytedance.larkoffice.com/wiki/PPi6wZ6tWiVLWckmEnOcL3ynnSg",
+        "sourceName": "豆包",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Cloudflare 新命令行 cf：为 Agent 重做的一套工具",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-cf-cli/",
+        "status": "published",
+        "slug": "cloudflare-cf-cli-2",
+        "upstreamUrl": "https://blog.cloudflare.com/cloudflare-cf-cli-launch",
+        "sourceName": "Cloudflare",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Sonnet 5.5 上手指南：怎么选、多少钱、从 Sonnet 5 怎么迁",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/building-with-claude-sonnet-5-5/",
+        "status": "skipped"
+      },
+      {
+        "title": "让 Claude 帮你建 eval、调 prompt，怎么不被分数骗",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/eval-design-hillclimbing/",
+        "status": "skipped"
+      },
+      {
+        "title": "Claude Sonnet 5.5 发布：编码性能和 Opus 5.5不相上下 价格是后者一半",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-sonnet-5-5/",
+        "status": "skipped"
+      },
+      {
+        "title": "Manus 发布 Manus 2.0、视频编辑器Alchemy、Game Dev和个人Agent： Cue",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/manus-2-0-cascade-studio-cue/",
+        "status": "skipped"
+      },
+      {
+        "title": "Google 推出一个类似个人 Agent 的实验性产品：CC，一个专门服务于家庭场景的“群组级 AI 助理”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/google-cc-family-agent/",
+        "status": "skipped"
+      },
+      {
+        "title": "为什么在 AI 泛滥的时代，最终赢家依然大概率是 OpenAI？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-creates-customers-distribution/",
+        "status": "skipped"
+      },
+      {
+        "title": "Elevenlab 发布两款新语音模型：Eleven v4 和 Eleven v4 Turbo  能根据文本内容“按剧情表演”声音",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/elevenlabs-v4-expressive-voice/",
+        "status": "skipped"
+      },
+      {
+        "title": "xAI 发布了 Team Bots：能融入团队工作流，随着用得越多，它会变得越来越懂业务",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/team-bots/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mum8ppqt",
+    "trigger": "catchup",
+    "startedAt": "2026-09-29T05:32:52.757Z",
+    "finishedAt": "2026-09-29T05:43:47.956Z",
+    "durationMs": 655199,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 7,
+    "items": [
+      {
+        "title": "Sonnet 5.5 上手指南：怎么选、多少钱、从 Sonnet 5 怎么迁",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/building-with-claude-sonnet-5-5/",
+        "status": "published",
+        "slug": "building-with-claude-sonnet-5-5",
+        "upstreamUrl": "https://claude.dev/blog/building-with-claude-sonnet-5-5/",
+        "sourceName": "Addy Osmani",
+        "resolution": "read-original"
+      },
+      {
+        "title": "让 Claude 帮你建 eval、调 prompt，怎么不被分数骗",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/eval-design-hillclimbing/",
+        "status": "skipped"
+      },
+      {
+        "title": "Claude Sonnet 5.5 发布：编码性能和 Opus 5.5不相上下 价格是后者一半",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-sonnet-5-5/",
+        "status": "skipped"
+      },
+      {
+        "title": "Manus 发布 Manus 2.0、视频编辑器Alchemy、Game Dev和个人Agent： Cue",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/manus-2-0-cascade-studio-cue/",
+        "status": "skipped"
+      },
+      {
+        "title": "Google 推出一个类似个人 Agent 的实验性产品：CC，一个专门服务于家庭场景的“群组级 AI 助理”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/google-cc-family-agent/",
+        "status": "skipped"
+      },
+      {
+        "title": "为什么在 AI 泛滥的时代，最终赢家依然大概率是 OpenAI？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-creates-customers-distribution/",
+        "status": "skipped"
+      },
+      {
+        "title": "Elevenlab 发布两款新语音模型：Eleven v4 和 Eleven v4 Turbo  能根据文本内容“按剧情表演”声音",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/elevenlabs-v4-expressive-voice/",
+        "status": "skipped"
+      },
+      {
+        "title": "xAI 发布了 Team Bots：能融入团队工作流，随着用得越多，它会变得越来越懂业务",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/team-bots/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mum7tmop",
+    "trigger": "catchup",
+    "startedAt": "2026-09-29T05:07:55.801Z",
+    "finishedAt": "2026-09-29T05:14:32.485Z",
+    "durationMs": 396684,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 2,
+    "items": [],
+    "kind": "member"
+  },
+  {
+    "id": "run-mum7dvfa",
+    "trigger": "catchup",
+    "startedAt": "2026-09-29T04:55:40.630Z",
+    "finishedAt": "2026-09-29T05:07:55.798Z",
+    "durationMs": 735168,
+    "discovered": 6,
+    "published": 2,
+    "failed": 4,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Claude Sonnet 5.5 发布：编码性能和 Opus 5.5不相上下 价格是后者一半",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-sonnet-5-5/",
+        "status": "published",
+        "slug": "claude-sonnet-5-5",
+        "upstreamUrl": "https://www.anthropic.com/claude-sonnet-5-5",
+        "sourceName": "Anthropic",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Manus 发布 Manus 2.0、视频编辑器Alchemy、Game Dev和个人Agent： Cue",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/manus-2-0-cascade-studio-cue/",
+        "status": "published",
+        "slug": "manus-2-0-cascade-studio-cue",
+        "upstreamUrl": "https://manus.im/zh-cn/blog/introducing-manus-2-0",
+        "sourceName": "Manus",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Google 推出一个类似个人 Agent 的实验性产品：CC，一个专门服务于家庭场景的“群组级 AI 助理”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/google-cc-family-agent/",
+        "status": "failed",
+        "upstreamUrl": "https://x.com/GoogleAI/status/2104645904682946908",
+        "sourceName": "Google AI",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): This operation was aborted"
+      },
+      {
+        "title": "为什么在 AI 泛滥的时代，最终赢家依然大概率是 OpenAI？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/openai-creates-customers-distribution/",
+        "status": "failed",
+        "upstreamUrl": "https://x.com/davidgeorge83/status/2104576086101426620?s=46",
+        "sourceName": "David George",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Elevenlab 发布两款新语音模型：Eleven v4 和 Eleven v4 Turbo  能根据文本内容“按剧情表演”声音",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/elevenlabs-v4-expressive-voice/",
+        "status": "failed",
+        "upstreamUrl": "https://elevenlabs.io/v4",
+        "sourceName": "ElevenLabs",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): 正文提取结果为空"
+      },
+      {
+        "title": "xAI 发布了 Team Bots：能融入团队工作流，随着用得越多，它会变得越来越懂业务",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/team-bots/",
+        "status": "failed",
+        "upstreamUrl": "https://x.ai/news/team-bots",
+        "sourceName": "SpaceXAI",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      }
+    ]
+  },
+  {
+    "id": "run-mulqe5cd",
+    "trigger": "cron",
+    "startedAt": "2026-09-28T21:00:00.013Z",
+    "finishedAt": "2026-09-28T21:05:14.295Z",
+    "durationMs": 314282,
+    "discovered": 2,
+    "published": 1,
+    "failed": 1,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "Claude 正在自己训练自己 Anthropic称：超过八成生产合并代码由Claude编写",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/anthropic-when-ai-builds-itself/",
+        "status": "published",
+        "slug": "anthropic-when-ai-builds-itself",
+        "upstreamUrl": "https://www.anthropic.com/institute/recursive-self-improvement",
+        "sourceName": "Anthropic Institute",
+        "resolution": "read-original"
+      },
+      {
+        "title": "3 天做完 18 个镜头：Higgsfield 动画团队怎样把 AI 放进传统动画流程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/higgsfield-passport-rush-animation/",
+        "status": "failed",
+        "upstreamUrl": "https://youtu.be/reFzEtCG_m8",
+        "sourceName": "Higgsfield Animation",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Higgsfield 的 11 个制作技能：让 AI 交付还能继续改的工程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/higgsfield-production-skills/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mukfr9rc",
+    "trigger": "catchup",
+    "startedAt": "2026-09-27T23:14:30.312Z",
+    "finishedAt": "2026-09-27T23:14:32.190Z",
+    "durationMs": 1878,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-muk0o3n3",
+    "trigger": "manual",
+    "kind": "member",
+    "startedAt": "2026-09-27T16:12:08.175Z",
+    "finishedAt": "2026-09-27T16:26:07.784Z",
+    "durationMs": 839609,
+    "discovered": 5,
+    "published": 5,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Higgsfield 的 11 个制作技能：让 AI 交付还能继续改的工程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/higgsfield-production-skills/",
+        "status": "published",
+        "slug": "higgsfield-production-skills",
+        "upstreamUrl": "https://higgsfield.ai/mcp/bundles/production-skills",
+        "sourceName": "Higgsfield",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Claude Code effort 实战指南：什么时候用 Low，什么时候该升档",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/spending-your-effort/",
+        "status": "published",
+        "slug": "spending-your-effort",
+        "upstreamUrl": "https://claude.dev/blog/spending-your-effort/",
+        "sourceName": "Anthropic / Thariq Shihipar",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Claude Opus 5.5 写代码画出一支手绘 MV：拆解做法，教你用开源模板自己做",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-clawd-animation-mv/",
+        "status": "published",
+        "slug": "opus-5-5-clawd-animation-mv",
+        "upstreamUrl": "https://github.com/JohnHeibel/PDoomVideo",
+        "sourceName": "NotinReality（GitHub：JohnHeibel）",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/prompting-claude-opus-5-5/",
+        "status": "published",
+        "slug": "prompting-claude-opus-5-5",
+        "upstreamUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5",
+        "sourceName": "Anthropic",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
+        "status": "published",
+        "slug": "opus-5-5-task-cost",
+        "upstreamUrl": "https://claude.com/blog/what-a-task-costs-on-opus-5-5",
+        "sourceName": "Addy Osmani · Anthropic",
+        "resolution": "read-original"
+      }
+    ]
+  },
+  {
+    "id": "run-muj7b3eh",
+    "trigger": "manual",
+    "kind": "member",
+    "startedAt": "2026-09-27T02:30:12.473Z",
+    "finishedAt": "2026-09-27T02:52:23.629Z",
+    "durationMs": 1331156,
+    "discovered": 5,
+    "published": 4,
+    "failed": 1,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Higgsfield 的 11 个制作技能：让 AI 交付还能继续改的工程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/higgsfield-production-skills/",
+        "status": "published",
+        "slug": "higgsfield-production-skills",
+        "upstreamUrl": "https://higgsfield.ai/mcp/bundles/production-skills",
+        "sourceName": "Higgsfield",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Claude Code effort 实战指南：什么时候用 Low，什么时候该升档",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/spending-your-effort/",
+        "status": "published",
+        "slug": "spending-your-effort",
+        "upstreamUrl": "https://claude.dev/blog/spending-your-effort/",
+        "sourceName": "Anthropic / Thariq Shihipar",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Claude Opus 5.5 写代码画出一支手绘 MV：拆解做法，教你用开源模板自己做",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-clawd-animation-mv/",
+        "status": "published",
+        "slug": "opus-5-5-clawd-animation-mv",
+        "upstreamUrl": "https://github.com/JohnHeibel/PDoomVideo",
+        "sourceName": "NotinReality（GitHub：JohnHeibel）",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/prompting-claude-opus-5-5/",
+        "status": "failed",
+        "upstreamUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5",
+        "sourceName": "Anthropic",
+        "resolution": "read-original",
+        "error": "上游原文抓取失败(已重试3次): 抓到疑似地区限制/反爬拦截页"
+      },
+      {
+        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
+        "status": "published",
+        "slug": "opus-5-5-task-cost",
+        "upstreamUrl": "https://claude.com/blog/what-a-task-costs-on-opus-5-5",
+        "sourceName": "Addy Osmani · Anthropic",
+        "resolution": "read-original"
+      }
+    ]
+  },
+  {
+    "id": "run-muj6o2qb",
+    "trigger": "manual",
+    "startedAt": "2026-09-27T02:12:18.515Z",
+    "finishedAt": "2026-09-27T02:19:21.977Z",
+    "durationMs": 423462,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 0,
+    "items": [],
+    "kind": "member"
+  },
+  {
+    "id": "run-muj6224n",
+    "trigger": "manual",
+    "kind": "member",
+    "startedAt": "2026-09-27T01:55:11.303Z",
+    "finishedAt": "2026-09-27T01:59:10.855Z",
+    "durationMs": 239552,
+    "discovered": 1,
+    "published": 0,
+    "failed": 1,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
+        "status": "failed",
+        "upstreamUrl": "https://claude.com/blog/what-a-task-costs-on-opus-5-5",
+        "sourceName": "Addy Osmani · Anthropic",
+        "resolution": "read-original",
+        "error": "本地模型均不可用 → http://127.0.0.1:1234/v1: fetch failed;http://127.0.0.1:8080/v1: fetch failed"
+      }
+    ]
+  },
+  {
+    "id": "run-muj4pf3m",
+    "trigger": "manual",
+    "startedAt": "2026-09-27T01:17:21.970Z",
+    "finishedAt": "2026-09-27T01:21:39.661Z",
+    "durationMs": 257691,
+    "discovered": 2,
+    "published": 0,
+    "failed": 2,
+    "skipped": 0,
+    "items": [],
+    "kind": "member"
+  },
+  {
+    "id": "run-muj44bo6",
+    "trigger": "manual",
+    "startedAt": "2026-09-27T01:00:57.750Z",
+    "finishedAt": "2026-09-27T01:07:34.301Z",
+    "durationMs": 396551,
+    "discovered": 5,
+    "published": 3,
+    "failed": 2,
+    "skipped": 0,
+    "items": [],
+    "kind": "member"
+  },
+  {
+    "id": "run-muih0kt7",
+    "trigger": "catchup",
+    "startedAt": "2026-09-26T14:14:11.803Z",
+    "finishedAt": "2026-09-26T14:14:14.517Z",
+    "durationMs": 2714,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-muhs0p44",
+    "trigger": "manual",
+    "startedAt": "2026-09-26T02:34:26.980Z",
+    "finishedAt": "2026-09-26T02:34:28.002Z",
+    "durationMs": 1022,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-muhrnbom",
+    "trigger": "catchup",
+    "startedAt": "2026-09-26T02:24:03.046Z",
+    "finishedAt": "2026-09-26T02:24:06.804Z",
+    "durationMs": 3758,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-mugfrtky",
+    "trigger": "manual",
+    "startedAt": "2026-09-25T04:03:51.298Z",
+    "finishedAt": "2026-09-25T04:19:13.663Z",
+    "durationMs": 922365,
+    "discovered": 17,
+    "published": 1,
+    "failed": 16,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-mugfr0sx",
+    "trigger": "catchup",
+    "startedAt": "2026-09-25T04:03:14.001Z",
+    "finishedAt": "2026-09-25T04:23:59.177Z",
+    "durationMs": 1245176,
+    "discovered": 17,
+    "published": 2,
+    "failed": 15,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "ACTx486：把一期现成播客，变成能插话、能改剧情的视频",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/actx486-talk-to-any-video/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "Google 发布 Gemini 3.8 Flash TTS语音模型 让你像导演一样逐行指导配音",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-3-8-flash-tts/",
+        "status": "published",
+        "slug": "gemini-3-8-flash-tts",
+        "upstreamUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/",
+        "sourceName": "Google"
+      },
+      {
+        "title": "Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/prompting-claude-opus-5-5/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): 正文过短(260 字符,疑似动态渲染页或拦截页)"
+      },
+      {
+        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "a16z 办了一所学校：打破传统高等教育模式，专为 AI 时代培养顶尖的“年轻创造者/实干家”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/horowitz-andreessen-academy/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Claude Opus 5.5 使用指南：从交代任务到验收结果",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-guide/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "SpaceXAI官方案例：工单增加175%，团队不增员：Grok Bot 如何接手客服全流程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-bot-customer-support/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Claude Opus 5.5 发布：编程、视觉与写作大幅升级，多项基准超越 Fable 5.1，价格却大幅降低｜看这些实战案例",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-opus-5-5/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "OpenAI 发布 GPT-6 Sol 与 Luna：能力大幅提升 价格砍半",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gpt-6-sol-and-luna/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "X 推出 X Numbers：给 X 用户一个“手机号”，直接私信、通话交流",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/x-chat-x-numbers/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): This operation was aborted"
+      },
+      {
+        "title": "Cloudflare 发布 Worker Previews：让 AI 写的每次改动，都可以直接跑在云端进行验证",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-worker-previews/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "SpaceXAI 发布 Grok 4.7 模型竞争开始转向“长时任务”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-4-7/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "案例：给企业 AI Agents 装上“长期记忆”和“企业上下文”：V7 如何用 Context Graph 跑通复杂商业工作流",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/v7-context-graph-institutional-memory/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "小米发布 MiMo-V2.6 开源模型 能做什么：性能逼近 Opus 5",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/xiaomi-mimo-v2-6/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "AI 原生服务大爆发： 外部买结果，内部跑系统 让客户买单来帮你打磨产品",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/ai-native-services-100b-opportunity/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): This operation was aborted"
+      },
+      {
+        "title": "阿里巴巴发布 Qwen3.8-LiveTranslate实时语音翻译模型：实时同传，而且能区分多位说话人",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/qwen3-8-livetranslate/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): 正文提取结果为空"
+      },
+      {
+        "title": "Google 发布全新笔记本电脑 Googlebook 预览：内置的 Gemini 智能系统 让 AI 接住光标、口述和后台任务",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/googlebook-built-in-intelligence/",
+        "status": "published",
+        "slug": "googlebook-built-in-intelligence-2",
+        "upstreamUrl": "https://blog.google/products-and-platforms/devices/googlebook/googlebook-built-in-intelligence/",
+        "sourceName": "Alexander Kuscher · Google"
+      }
+    ]
+  },
+  {
+    "id": "run-mugfdf02",
+    "trigger": "catchup",
+    "startedAt": "2026-09-25T03:52:39.218Z",
+    "finishedAt": "2026-09-25T04:00:10.942Z",
+    "durationMs": 451724,
+    "discovered": 17,
+    "published": 2,
+    "failed": 15,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Claude Opus 5.5 写代码画出一支手绘 MV：拆解做法，教你用开源模板自己做",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-clawd-animation-mv/",
+        "status": "published",
+        "slug": "opus-5-5-clawd-animation-mv",
+        "upstreamUrl": "https://github.com/JohnHeibel/PDoomVideo",
+        "sourceName": "NotinReality（GitHub：JohnHeibel）"
+      },
+      {
+        "title": "ACTx486：把一期现成播客，变成能插话、能改剧情的视频",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/actx486-talk-to-any-video/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "Google 发布 Gemini 3.8 Flash TTS语音模型 让你像导演一样逐行指导配音",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-3-8-flash-tts/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/prompting-claude-opus-5-5/",
+        "status": "published",
+        "slug": "prompting-claude-opus-5-5",
+        "upstreamUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5",
+        "sourceName": "Anthropic"
+      },
+      {
+        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "a16z 办了一所学校：打破传统高等教育模式，专为 AI 时代培养顶尖的“年轻创造者/实干家”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/horowitz-andreessen-academy/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Claude Opus 5.5 使用指南：从交代任务到验收结果",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-guide/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "SpaceXAI官方案例：工单增加175%，团队不增员：Grok Bot 如何接手客服全流程",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-bot-customer-support/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Claude Opus 5.5 发布：编程、视觉与写作大幅升级，多项基准超越 Fable 5.1，价格却大幅降低｜看这些实战案例",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-opus-5-5/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "OpenAI 发布 GPT-6 Sol 与 Luna：能力大幅提升 价格砍半",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gpt-6-sol-and-luna/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "X 推出 X Numbers：给 X 用户一个“手机号”，直接私信、通话交流",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/x-chat-x-numbers/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "Cloudflare 发布 Worker Previews：让 AI 写的每次改动，都可以直接跑在云端进行验证",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-worker-previews/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
+      },
+      {
+        "title": "SpaceXAI 发布 Grok 4.7 模型竞争开始转向“长时任务”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-4-7/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "案例：给企业 AI Agents 装上“长期记忆”和“企业上下文”：V7 如何用 Context Graph 跑通复杂商业工作流",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/v7-context-graph-institutional-memory/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): HTTP 403"
+      },
+      {
+        "title": "小米发布 MiMo-V2.6 开源模型 能做什么：性能逼近 Opus 5",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/xiaomi-mimo-v2-6/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "AI 原生服务大爆发： 外部买结果，内部跑系统 让客户买单来帮你打磨产品",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/ai-native-services-100b-opportunity/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): fetch failed"
+      },
+      {
+        "title": "阿里巴巴发布 Qwen3.8-LiveTranslate实时语音翻译模型：实时同传，而且能区分多位说话人",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/qwen3-8-livetranslate/",
+        "status": "failed",
+        "error": "上游原文抓取失败(已重试3次): 正文提取结果为空"
+      }
+    ]
+  }
+]

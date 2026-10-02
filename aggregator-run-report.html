@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聚合批次运行报告 · run-mugfr0sx</title>
+<style>
+  :root {
+    --bg:#0f1117; --panel:#181b24; --panel2:#1f2330; --border:#2a2f3d;
+    --text:#e6e9f0; --muted:#8b93a7; --accent:#5b8cff;
+    --ok:#3ecf8e; --ok-bg:rgba(62,207,142,.12);
+    --fail:#ff6b6b; --fail-bg:rgba(255,107,107,.12);
+    --warn:#ffb454;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6; padding:32px 20px 80px; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-size:26px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:28px; }
+  .sub code { background:var(--panel); padding:2px 7px; border-radius:5px; color:var(--accent); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:28px; }
+  .stat { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .stat .n { font-size:30px; font-weight:700; }
+  .stat .l { color:var(--muted); font-size:13px; }
+  .stat.ok .n { color:var(--ok); }
+  .stat.fail .n { color:var(--fail); }
+  section { margin-bottom:34px; }
+  h2 { font-size:18px; margin:0 0 14px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  table { width:100%; border-collapse:collapse; background:var(--panel); border-radius:12px; overflow:hidden; }
+  th,td { text-align:left; padding:11px 15px; border-bottom:1px solid var(--border); font-size:14px; }
+  th { background:var(--panel2); color:var(--muted); font-weight:600; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  tr:last-child td { border-bottom:none; }
+  .tag { background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:2px 9px; border-radius:20px; font-size:12px; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:15px 17px; margin-bottom:12px; border-left:4px solid var(--border); }
+  .card.ok { border-left-color:var(--ok); }
+  .card.fail { border-left-color:var(--fail); }
+  .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; }
+  .idx { color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; min-width:26px; }
+  .card-title { font-weight:600; flex:1; }
+  .badge { font-size:12px; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+  .badge.ok { color:var(--ok); background:var(--ok-bg); }
+  .badge.fail { color:var(--fail); background:var(--fail-bg); }
+  .kv-grid { display:grid; gap:6px; }
+  .kv { display:flex; gap:12px; font-size:13.5px; }
+  .kv .k { color:var(--muted); min-width:78px; flex-shrink:0; }
+  .kv a { color:var(--accent); text-decoration:none; word-break:break-all; }
+  .kv a:hover { text-decoration:underline; }
+  .kv code { background:var(--panel2); padding:2px 7px; border-radius:5px; }
+  .kv.err pre { margin:0; background:var(--fail-bg); color:var(--fail); padding:8px 11px;
+    border-radius:8px; font-family:ui-monospace,Menlo,monospace; font-size:12.5px; word-break:break-word; }
+  .filter { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .filter button { background:var(--panel); border:1px solid var(--border); color:var(--text);
+    padding:6px 14px; border-radius:20px; cursor:pointer; font-size:13px; }
+  .filter button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .meta { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .meta .kv-grid { grid-template-columns:1fr 1fr; }
+  .footer { color:var(--muted); font-size:12.5px; margin-top:40px; text-align:center; }
+  @media(max-width:640px){ .meta .kv-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AIHot 聚合管线 · 批次运行报告</h1>
+  <div class="sub">最近一次真实批量运行 · 运行 ID <code>run-mugfr0sx</code> · 触发方式 catchup</div>
+
+  <div class="grid">
+    <div class="stat"><div class="n">17</div><div class="l">发现新文章</div></div>
+    <div class="stat ok"><div class="n">2</div><div class="l">成功发布</div></div>
+    <div class="stat fail"><div class="n">15</div><div class="l">抓取失败</div></div>
+    <div class="stat"><div class="n">12%</div><div class="l">成功率</div></div>
+    <div class="stat"><div class="n">20m 45s</div><div class="l">总耗时</div></div>
+  </div>
+
+  <section>
+    <h2>运行元信息</h2>
+    <div class="meta"><div class="kv-grid">
+      <div class="kv"><span class="k">开始时间</span>2026-09-25 04:03:14 UTC</div>
+      <div class="kv"><span class="k">结束时间</span>2026-09-25 04:23:59 UTC</div>
+      <div class="kv"><span class="k">运行 ID</span><code>run-mugfr0sx</code></div>
+      <div class="kv"><span class="k">触发方式</span>catchup</div>
+      <div class="kv"><span class="k">数据源</span>best.xiaohu.ai/rss.xml</div>
+      <div class="kv"><span class="k">报告生成</span>2026-09-26 22:24:47</div>
+    </div></div>
+  </section>
+
+  <section>
+    <h2>失败原因分布 (15 项)</h2>
+    <table>
+      <thead><tr><th>失败类别</th><th style="text-align:right">数量</th><th style="text-align:right">占比</th></tr></thead>
+      <tbody><tr><td><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></td><td class="num">5</td><td class="num">33%</td></tr><tr><td><span class="tag">网络 fetch failed (连接失败/被拒)</span></td><td class="num">4</td><td class="num">27%</td></tr><tr><td><span class="tag">上游返回 HTTP 403 (反爬/鉴权)</span></td><td class="num">2</td><td class="num">13%</td></tr><tr><td><span class="tag">请求超时中止</span></td><td class="num">2</td><td class="num">13%</td></tr><tr><td><span class="tag">正文过短 (疑似 JS 动态渲染 / 拦截页)</span></td><td class="num">1</td><td class="num">7%</td></tr><tr><td><span class="tag">正文提取结果为空</span></td><td class="num">1</td><td class="num">7%</td></tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>逐条明细 (输入 → 输出 / 错误)</h2>
+    <div class="filter">
+      <button class="active" data-f="all">全部 (17)</button>
+      <button data-f="ok">成功 (2)</button>
+      <button data-f="fail">失败 (15)</button>
+    </div>
+    <div id="cards">
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#1</span>
+        <span class="card-title">ACTx486：把一期现成播客，变成能插话、能改剧情的视频</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/actx486-talk-to-any-video/" target="_blank">https://best.xiaohu.ai/article/actx486-talk-to-any-video/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): Maximum call stack size exceeded</pre></div></div>
+    </div>
+    <div class="card ok">
+      <div class="card-head">
+        <span class="idx">#2</span>
+        <span class="card-title">Google 发布 Gemini 3.8 Flash TTS语音模型 让你像导演一样逐行指导配音</span>
+        <span class="badge ok">已发布</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/gemini-3-8-flash-tts/" target="_blank">https://best.xiaohu.ai/article/gemini-3-8-flash-tts/</a></div><div class="kv"><span class="k">发布 slug</span><code>gemini-3-8-flash-tts</code></div><div class="kv"><span class="k">上游原文</span><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/" target="_blank">https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/</a></div><div class="kv"><span class="k">来源</span>Google</div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#3</span>
+        <span class="card-title">Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/prompting-claude-opus-5-5/" target="_blank">https://best.xiaohu.ai/article/prompting-claude-opus-5-5/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">正文过短 (疑似 JS 动态渲染 / 拦截页)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): 正文过短(260 字符,疑似动态渲染页或拦截页)</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#4</span>
+        <span class="card-title">Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/opus-5-5-task-cost/" target="_blank">https://best.xiaohu.ai/article/opus-5-5-task-cost/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): Maximum call stack size exceeded</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#5</span>
+        <span class="card-title">a16z 办了一所学校：打破传统高等教育模式，专为 AI 时代培养顶尖的“年轻创造者/实干家”</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/horowitz-andreessen-academy/" target="_blank">https://best.xiaohu.ai/article/horowitz-andreessen-academy/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">网络 fetch failed (连接失败/被拒)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): fetch failed</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#6</span>
+        <span class="card-title">Claude Opus 5.5 使用指南：从交代任务到验收结果</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/opus-5-5-guide/" target="_blank">https://best.xiaohu.ai/article/opus-5-5-guide/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): Maximum call stack size exceeded</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#7</span>
+        <span class="card-title">SpaceXAI官方案例：工单增加175%，团队不增员：Grok Bot 如何接手客服全流程</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/grok-bot-customer-support/" target="_blank">https://best.xiaohu.ai/article/grok-bot-customer-support/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">网络 fetch failed (连接失败/被拒)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): fetch failed</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#8</span>
+        <span class="card-title">Claude Opus 5.5 发布：编程、视觉与写作大幅升级，多项基准超越 Fable 5.1，价格却大幅降低｜看这些实战案例</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/claude-opus-5-5/" target="_blank">https://best.xiaohu.ai/article/claude-opus-5-5/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): Maximum call stack size exceeded</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#9</span>
+        <span class="card-title">OpenAI 发布 GPT-6 Sol 与 Luna：能力大幅提升 价格砍半</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/gpt-6-sol-and-luna/" target="_blank">https://best.xiaohu.ai/article/gpt-6-sol-and-luna/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">上游返回 HTTP 403 (反爬/鉴权)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): HTTP 403</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#10</span>
+        <span class="card-title">X 推出 X Numbers：给 X 用户一个“手机号”，直接私信、通话交流</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/x-chat-x-numbers/" target="_blank">https://best.xiaohu.ai/article/x-chat-x-numbers/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">请求超时中止</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): This operation was aborted</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#11</span>
+        <span class="card-title">Cloudflare 发布 Worker Previews：让 AI 写的每次改动，都可以直接跑在云端进行验证</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/cloudflare-worker-previews/" target="_blank">https://best.xiaohu.ai/article/cloudflare-worker-previews/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">HTML 正文提取栈溢出 (node-html-parser 深嵌套)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): Maximum call stack size exceeded</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#12</span>
+        <span class="card-title">SpaceXAI 发布 Grok 4.7 模型竞争开始转向“长时任务”</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/grok-4-7/" target="_blank">https://best.xiaohu.ai/article/grok-4-7/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">网络 fetch failed (连接失败/被拒)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): fetch failed</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#13</span>
+        <span class="card-title">案例：给企业 AI Agents 装上“长期记忆”和“企业上下文”：V7 如何用 Context Graph 跑通复杂商业工作流</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/v7-context-graph-institutional-memory/" target="_blank">https://best.xiaohu.ai/article/v7-context-graph-institutional-memory/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">上游返回 HTTP 403 (反爬/鉴权)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): HTTP 403</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#14</span>
+        <span class="card-title">小米发布 MiMo-V2.6 开源模型 能做什么：性能逼近 Opus 5</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/xiaomi-mimo-v2-6/" target="_blank">https://best.xiaohu.ai/article/xiaomi-mimo-v2-6/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">网络 fetch failed (连接失败/被拒)</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): fetch failed</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#15</span>
+        <span class="card-title">AI 原生服务大爆发： 外部买结果，内部跑系统 让客户买单来帮你打磨产品</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/ai-native-services-100b-opportunity/" target="_blank">https://best.xiaohu.ai/article/ai-native-services-100b-opportunity/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">请求超时中止</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): This operation was aborted</pre></div></div>
+    </div>
+    <div class="card fail">
+      <div class="card-head">
+        <span class="idx">#16</span>
+        <span class="card-title">阿里巴巴发布 Qwen3.8-LiveTranslate实时语音翻译模型：实时同传，而且能区分多位说话人</span>
+        <span class="badge fail">失败</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/qwen3-8-livetranslate/" target="_blank">https://best.xiaohu.ai/article/qwen3-8-livetranslate/</a></div><div class="kv"><span class="k">失败类别</span><span class="tag">正文提取结果为空</span></div><div class="kv err"><span class="k">错误详情</span><pre>上游原文抓取失败(已重试3次): 正文提取结果为空</pre></div></div>
+    </div>
+    <div class="card ok">
+      <div class="card-head">
+        <span class="idx">#17</span>
+        <span class="card-title">Google 发布全新笔记本电脑 Googlebook 预览：内置的 Gemini 智能系统 让 AI 接住光标、口述和后台任务</span>
+        <span class="badge ok">已发布</span>
+      </div>
+      <div class="kv-grid"><div class="kv"><span class="k">小互文章</span><a href="https://best.xiaohu.ai/article/googlebook-built-in-intelligence/" target="_blank">https://best.xiaohu.ai/article/googlebook-built-in-intelligence/</a></div><div class="kv"><span class="k">发布 slug</span><code>googlebook-built-in-intelligence-2</code></div><div class="kv"><span class="k">上游原文</span><a href="https://blog.google/products-and-platforms/devices/googlebook/googlebook-built-in-intelligence/" target="_blank">https://blog.google/products-and-platforms/devices/googlebook/googlebook-built-in-intelligence/</a></div><div class="kv"><span class="k">来源</span>Alexander Kuscher · Google</div></div>
+    </div></div>
+  </section>
+
+  <div class="footer">AIHot 聚合管线运行报告 · 数据源 content/aggregator/runs.json · 生成于 2026-09-26 22:24:47</div>
+</div>
+<script>
+  document.querySelectorAll('.filter button').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('.filter button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      const f=b.dataset.f;
+      document.querySelectorAll('#cards .card').forEach(c=>{
+        c.style.display = (f==='all' || c.classList.contains(f)) ? '' : 'none';
+      });
+    };
+  });
+</script>
+</body>
+</html>
