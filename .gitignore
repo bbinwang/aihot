@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.nuxt/
+.out/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Sensitive config (untracked)
+ai-insights/src/server/utils/.secret_admin_password
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Aggregator data (optional: uncomment if you don't want to commit)
+# ai-insights/content/aggregator/runs.json
+# ai-insights/content/aggregator/state.json
+
+# Build artifacts
+*.tgz
+*.zip
