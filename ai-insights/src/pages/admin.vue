@@ -140,9 +140,20 @@ interface RunItem {
   sourceName?: string
   status: 'published' | 'failed' | 'skipped'
   slug?: string
+  /** 是否会员(付费)文章 */
+  paid?: boolean
   /** 溯源方式:anchor=阅读原文锚点 / search=网络搜索 */
   resolution?: string
+  /** 正文抓取方式(固定三值):upstream-http=上游原文·HTTP / upstream-cdp=上游原文·CDP / xiaohu=小互站点爬取 */
+  fetchMethod?: 'upstream-http' | 'upstream-cdp' | 'xiaohu'
   error?: string
+}
+
+/** 抓取方式展示文案(管理台每个链接标注,固定三值) */
+const FETCH_METHOD_LABEL: Record<NonNullable<RunItem['fetchMethod']>, string> = {
+  'upstream-http': '上游原文 · HTTP',
+  'upstream-cdp': '上游原文 · CDP',
+  'xiaohu': '小互站点爬取',
 }
 interface RunReport {
   id: string
@@ -491,6 +502,12 @@ const failedItems = computed<RunItem[]>(() => {
                     <div v-for="(item, j) in run.items" :key="j" class="agg-item">
                       <span class="chip" :class="`chip-${item.status}`">
                         {{ { published: '✓ 已发布', failed: '✗ 失败', skipped: '− 跳过' }[item.status] }}
+                      </span>
+                      <span v-if="typeof item.paid === 'boolean'" class="chip" :class="item.paid ? 'chip-paid' : 'chip-free'">
+                        {{ item.paid ? '🔒 会员' : '免费' }}
+                      </span>
+                      <span v-if="item.fetchMethod" class="chip chip-fetch" :class="`chip-fetch-${item.fetchMethod}`">
+                        {{ FETCH_METHOD_LABEL[item.fetchMethod] }}
                       </span>
                       <NuxtLink v-if="item.slug" class="link" :to="`/articles/${item.slug}`" target="_blank">{{ item.title }}</NuxtLink>
                       <span v-else>{{ item.title }}</span>

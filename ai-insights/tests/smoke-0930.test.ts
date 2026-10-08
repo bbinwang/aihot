@@ -117,9 +117,11 @@ describe('冒烟:回放 2026-09-30 北京 23:59:59 聚合(5 篇,分级兜底后�
     const by = (slug: string) => report.items.find(i => i.xiaohuUrl.includes(slug))!
     // EmDash:上游正常,走原文锚点
     expect(by('cloudflare-emdash-plugin-registry').resolution).toBe('read-original')
+    expect(by('cloudflare-emdash-plugin-registry').fetchMethod).toBe('upstream-http')
     // 4 篇失败上游全部降级为小互解读正文
     for (const slug of ['openai-dots', 'typesafe-jev-a16z', 'openai-devday-2026-recap', 'doubao-creative-design-upgrade']) {
       expect(by(slug).resolution).toBe('xiaohu')
+      expect(by(slug).fetchMethod).toBe('xiaohu')
       expect(by(slug).status).toBe('published')
     }
     // 豆包(当晚缺文主角)确实落盘,且说明行注明兜底来源
@@ -157,6 +159,8 @@ describe('冒烟:回放 2026-09-30 北京 23:59:59 聚合(5 篇,分级兜底后�
     const report = await runAggregation('cron', { fetcher, browserFetcher, now: new Date('2026-09-30T15:59:59.003Z') })
     expect(report.published).toBe(1)
     expect(report.items[0].resolution).toBe('cdp')
+    expect(report.items[0].fetchMethod).toBe('upstream-cdp')
+    expect(report.items[0].paid).toBe(true)
     expect(report.items[0].slug).toBe('member-cdp-demo')
     expect(fs.readFileSync(path.join(articlesDir, 'member-cdp-demo.md'), 'utf-8')).toContain('CDP 浏览器渲染获取')
   }, 120_000)

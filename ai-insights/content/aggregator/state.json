@@ -1,6 +1,19 @@
 {
-  "lastRunAt": "2026-10-01T16:12:37.326Z",
+  "lastRunAt": "2026-10-05T04:37:08.937Z",
   "processedUrls": [
+    "https://best.xiaohu.ai/article/anthropic-claude-morals-consciousness/",
+    "https://best.xiaohu.ai/article/multi-harness-rl/",
+    "https://best.xiaohu.ai/article/poteto-agent-engineering/",
+    "https://best.xiaohu.ai/article/dots-codex-delegation/",
+    "https://best.xiaohu.ai/article/specialized-ai-god-model/",
+    "https://best.xiaohu.ai/article/claude-skill-authoring-best-practices/",
+    "https://best.xiaohu.ai/article/karpathy-understanding-ai-outputs/",
+    "https://best.xiaohu.ai/article/muse-gadgets-hardware/",
+    "https://best.xiaohu.ai/article/opus-5-5-code-creative-projects/",
+    "https://best.xiaohu.ai/article/a16z-state-of-markets-ii/",
+    "https://best.xiaohu.ai/article/boston-dynamics-atlas-robot-hands/",
+    "https://best.xiaohu.ai/article/claude-code-mods/",
+    "https://best.xiaohu.ai/article/tavus-griffin/",
     "https://best.xiaohu.ai/article/cloudflare-next-git-platform/",
     "https://best.xiaohu.ai/article/ideogram-4-5/",
     "https://best.xiaohu.ai/article/gemini-4-argon/",
@@ -44,6 +57,6 @@
     "https://best.xiaohu.ai/article/qwen3-8-livetranslate/",
     "https://best.xiaohu.ai/article/googlebook-built-in-intelligence/"
   ],
-  "publishedCount": 33,
-  "lastSlotAt": "2026-10-01T15:59:59.000Z"
+  "publishedCount": 47,
+  "lastSlotAt": "2026-10-04T15:59:59.000Z"
 }

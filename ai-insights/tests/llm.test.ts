@@ -39,15 +39,18 @@ describe('llmComplete', () => {
         status: 429,
         body: JSON.stringify({ type: 'error', error: { type: 'rate_limit_error', message: 'Rate limit exceeded (配额)' } }),
       },
-      { match: '127.0.0.1:1234/v1/models', body: JSON.stringify({ data: [{ id: 'qwen3-8b' }] }) },
       {
-        match: '127.0.0.1:1234/v1/chat/completions',
+        match: '127.0.0.1:18000/v1/models',
+        body: JSON.stringify({ data: [{ id: 'Qwen3.5-27B-Distilled' }, { id: 'MacJd-Qwen36-35B' }] }),
+      },
+      {
+        match: '127.0.0.1:18000/v1/chat/completions',
         body: JSON.stringify({ choices: [{ message: { content: '本地模型译文' } }] }),
       },
     ])
     const res = await llmComplete({ system: 's', user: 'u', fetcher })
     expect(res.engine).toBe('local')
-    expect(res.model).toBe('qwen3-8b')
+    expect(res.model).toBe('MacJd-Qwen36-35B')
     expect(res.text).toBe('本地模型译文')
   })
 

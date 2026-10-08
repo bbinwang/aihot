@@ -1,7 +1,7 @@
 /**
  * LLM 调用层:智谱 GLM(Anthropic 兼容端点)优先;
  * 命中限流(429/配额)时熔断 10 分钟并降级到本机 OpenAI 兼容服务
- * (LM Studio 默认 127.0.0.1:1234 / mlx_lm 默认 127.0.0.1:8080,key=1234)。
+ * (oMLX 127.0.0.1:18000 为首选,模型 MacJd-Qwen36-35B;LM Studio 1234 / mlx_lm 8080 备用)。
  */
 
 const ZHIPU_BASE = () => process.env.ZHIPU_BASE_URL || 'https://open.bigmodel.cn/api/anthropic'
@@ -13,11 +13,13 @@ const OPENROUTER_BASE = () => process.env.OPENROUTER_BASE_URL || 'https://openro
 const OPENROUTER_KEY = () => process.env.OPENROUTER_API_KEY || ''
 const OPENROUTER_MODEL = () => process.env.OPENROUTER_MODEL || 'deepseek/deepseek-v4-flash'
 
-/** 本地 OpenAI 兼容服务候选地址,逗号分隔 */
+/** 本地 OpenAI 兼容服务候选地址,逗号分隔(oMLX 首选,LM Studio / mlx_lm 备用) */
 const LOCAL_BASES = () =>
-  (process.env.LOCAL_LLM_BASES || 'http://127.0.0.1:1234/v1,http://127.0.0.1:8080/v1')
+  (process.env.LOCAL_LLM_BASES || 'http://127.0.0.1:18000/v1,http://127.0.0.1:1234/v1,http://127.0.0.1:8080/v1')
     .split(',').map(s => s.trim()).filter(Boolean)
-const LOCAL_KEY = () => process.env.LOCAL_LLM_API_KEY || '1234'
+const LOCAL_KEY = () => process.env.LOCAL_LLM_API_KEY || 'fa6d628467476459e0781e53e659c66c52cd5b91d408df61ab68aaee5737264e'
+/** 本地首选模型 id;若候选服务的 /models 列表中没有,则回退取第一个 */
+const LOCAL_MODEL = () => process.env.LOCAL_LLM_MODEL || 'MacJd-Qwen36-35B'
 
 /** 智谱限流熔断到期时间戳(模块级内存态) */
 let zhipuBlockedUntil = 0
@@ -88,7 +90,8 @@ async function discoverLocalModel(base: string, fetcher: Fetcher): Promise<strin
   }, 5000)
   if (status >= 400) throw new Error(`本地模型服务 ${base} 不可用(HTTP ${status})`)
   const data = JSON.parse(body)
-  const id = data?.data?.[0]?.id
+  const ids: string[] = (data?.data || []).map((m: { id?: string }) => m.id).filter(Boolean)
+  const id = ids.find(x => x === LOCAL_MODEL()) || ids[0]
   if (!id) throw new Error(`本地模型服务 ${base} 无可用模型`)
   localModelCache.set(base, { id, at: Date.now() })
   return id

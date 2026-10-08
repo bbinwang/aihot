@@ -472,6 +472,14 @@ img { max-width: 100%; }
 .chip-published { color: #2ea44f; border-color: rgba(46, 164, 79, 0.4); background: rgba(46, 164, 79, 0.1); }
 .chip-failed { color: var(--accent); border-color: rgba(210, 60, 60, 0.4); }
 .chip-skipped { color: var(--text-3); }
+/* 会员/免费标记 chip */
+.chip-paid { color: #bf3989; border-color: rgba(191, 57, 137, 0.4); background: rgba(191, 57, 137, 0.08); }
+.chip-free { color: var(--text-3); }
+/* 抓取方式 chip(固定三值):上游原文·HTTP / 上游原文·CDP / 小互站点爬取 */
+.chip-fetch { font-size: 11px; }
+.chip-fetch-upstream-http { color: #0969da; border-color: rgba(9, 105, 218, 0.4); background: rgba(9, 105, 218, 0.08); }
+.chip-fetch-upstream-cdp { color: #8250df; border-color: rgba(130, 80, 223, 0.4); background: rgba(130, 80, 223, 0.08); }
+.chip-fetch-xiaohu { color: #bf8700; border-color: rgba(191, 135, 0, 0.4); background: rgba(191, 135, 0, 0.08); }
 .agg-src { color: var(--text-3); font-size: 12px; white-space: nowrap; }
 .agg-src:hover { color: var(--accent); }
 

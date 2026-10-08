@@ -44,6 +44,14 @@ export interface ArticleSource {
 
 export type RunItemStatus = 'published' | 'failed' | 'skipped'
 
+/**
+ * 正文抓取方式(管理台展示,固定三值):
+ *   upstream-http  上游原文经 HTTP 抓取(含 GitHub README / .md 捷径 / HTML→MD / 阅读器代理 / llms-full.txt)
+ *   upstream-cdp   上游原文经 CDP 真浏览器渲染直爬
+ *   xiaohu         小互站点爬取(解读站正文,纯 HTTP 或 CDP 渲染小互页)
+ */
+export type FetchMethod = 'upstream-http' | 'upstream-cdp' | 'xiaohu'
+
 export interface RunItem {
   title: string
   xiaohuUrl: string
@@ -51,9 +59,13 @@ export interface RunItem {
   sourceName?: string
   status: RunItemStatus
   slug?: string
+  /** 是否会员(付费)文章(管理台展示 会员/非会员 标记) */
+  paid?: boolean
   error?: string
   /** 上游链接解析方式:阅读原文锚点 / 外链兜底 / 网络搜索 / 人工指定;兜底正文来源:CDP 渲染上游 / 小互解读站 / CDP 渲染小互页 */
   resolution?: 'read-original' | 'external-link' | 'web-search' | 'manual' | 'cdp' | 'xiaohu' | 'cdp-xiaohu'
+  /** 正文抓取方式(管理台展示,固定三值,见 FetchMethod) */
+  fetchMethod?: FetchMethod
 }
 
 export interface RunReport {
@@ -713,6 +725,19 @@ async function fetchTieredContent(
   }
 }
 
+/**
+ * 由最终 resolution 推导管理台展示的抓取方式(固定三值):
+ *   cdp            → 上游原文 · CDP 真浏览器直爬
+ *   xiaohu/cdp-xiaohu → 小互站点爬取(解读站正文,HTTP 或 CDP 渲染小互页)
+ *   其余(read-original/external-link/web-search/manual)→ 上游原文 · HTTP
+ */
+function toFetchMethod(resolution: RunItem['resolution']): FetchMethod | undefined {
+  if (resolution === 'cdp') return 'upstream-cdp'
+  if (resolution === 'xiaohu' || resolution === 'cdp-xiaohu') return 'xiaohu'
+  if (resolution) return 'upstream-http'
+  return undefined
+}
+
 // ---------------------------------------------------------------------------
 // 文章组装与发布
 // ---------------------------------------------------------------------------
@@ -788,7 +813,7 @@ async function processItem(
   item: FeedItem,
   opts: { fetcher?: Fetcher; viaLabel?: string; searchFallback?: boolean; browserFetcher?: BrowserFetcher },
 ): Promise<RunItem> {
-  const base: RunItem = { title: item.title, xiaohuUrl: item.link, status: 'failed' }
+  const base: RunItem = { title: item.title, xiaohuUrl: item.link, status: 'failed', paid: item.paid === true }
   let source: ArticleSource | null = null
   let resolution: RunItem['resolution']
   let title = item.title
@@ -840,7 +865,15 @@ async function processItem(
       note: fetched.note,
       fetcher: opts.fetcher,
     })
-    return { ...base, status: 'published', slug, upstreamUrl: source.upstreamUrl, sourceName: source.sourceName, resolution: fetched.resolution }
+    return {
+      ...base,
+      status: 'published',
+      slug,
+      upstreamUrl: source.upstreamUrl,
+      sourceName: source.sourceName,
+      resolution: fetched.resolution,
+      fetchMethod: toFetchMethod(fetched.resolution),
+    }
   } catch (err) {
     // 失败也要带上已溯源到的上游链接,管理台「待人工处理」才能一键重爬
     return {

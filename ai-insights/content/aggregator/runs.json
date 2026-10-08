@@ -1,5 +1,191 @@
 [
   {
+    "id": "run-muur99zw-e4sc",
+    "trigger": "manual",
+    "kind": "member",
+    "startedAt": "2026-10-05T04:34:07.964Z",
+    "finishedAt": "2026-10-05T04:37:08.937Z",
+    "durationMs": 180973,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Anthropic 的秘密宗教会面：他们为什么要给 Claude“立心”？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/anthropic-claude-morals-consciousness/",
+        "status": "published",
+        "paid": true,
+        "slug": "anthropic-claude-morals-consciousness-2",
+        "upstreamUrl": "https://www.nytimes.com/2026/09/29/us/anthropic-claude-morals-ai.html",
+        "sourceName": "Elizabeth Dias",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      }
+    ]
+  },
+  {
+    "id": "run-muu0bfom-bkf1",
+    "trigger": "cron",
+    "startedAt": "2026-10-04T15:59:59.014Z",
+    "finishedAt": "2026-10-04T16:34:50.406Z",
+    "durationMs": 2091392,
+    "discovered": 6,
+    "published": 6,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "同一个 AI 模型，换个 Agent 框架，为什么表现差这么多？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/multi-harness-rl/",
+        "status": "published",
+        "slug": "multi-harness-rl",
+        "upstreamUrl": "https://huggingface.co/spaces/FineEnvs/multi-harness-rl#introduction",
+        "sourceName": "Hugging Face / Liquid AI",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "SpaceXAI工程师：如何摆脱当 AI 的“人形搬运工”，实现单月合并 2500 个高质量PR？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/poteto-agent-engineering/",
+        "status": "published",
+        "slug": "poteto-agent-engineering",
+        "upstreamUrl": "https://www.youtube.com/watch?v=MN9dGgmLyso",
+        "sourceName": "Matt Pocock / Lauren Tan",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "把任务交给 Dot，和 Codex 一起做：开发者的新协作方式",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/dots-codex-delegation/",
+        "status": "published",
+        "slug": "dots-codex-delegation",
+        "upstreamUrl": "https://x.com/dkundel/status/2106141525306397099",
+        "sourceName": "Dominik Kundel",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "为什么专用 AI 可能胜过全能模型？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/specialized-ai-god-model/",
+        "status": "published",
+        "slug": "specialized-ai-god-model",
+        "upstreamUrl": "https://youtu.be/ekK8urKHPMQ",
+        "sourceName": "a16z",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "Anthropic 官方 Skill 实践指南：怎样写、怎样改、怎样验证它有用",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-skill-authoring-best-practices/",
+        "status": "published",
+        "slug": "claude-skill-authoring-best-practices",
+        "upstreamUrl": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices",
+        "sourceName": "Anthropic",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Karpathy：让 AI 把复杂问题讲清楚的四种方法",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/karpathy-understanding-ai-outputs/",
+        "status": "published",
+        "slug": "karpathy-understanding-ai-outputs",
+        "upstreamUrl": "https://x.com/karpathy/status/2105819303471976479",
+        "sourceName": "Andrej Karpathy",
+        "resolution": "xiaohu"
+      }
+    ]
+  },
+  {
+    "id": "run-muskvl0f-k179",
+    "trigger": "cron",
+    "startedAt": "2026-10-03T15:59:59.007Z",
+    "finishedAt": "2026-10-03T16:04:26.357Z",
+    "durationMs": 267350,
+    "discovered": 2,
+    "published": 2,
+    "failed": 0,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "Meta 发布 Muse Gadgets SDK：给 Muse 接上屏幕、按键和连接家里的设备",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/muse-gadgets-hardware/",
+        "status": "published",
+        "slug": "muse-gadgets-hardware",
+        "upstreamUrl": "https://gadgets.muse.ai/",
+        "sourceName": "Meta / Muse",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "Claude 写代码，能做出什么视频和游戏？十个开源项目拆解",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-code-creative-projects/",
+        "status": "published",
+        "slug": "opus-5-5-code-creative-projects",
+        "upstreamUrl": "https://x.com/charliejhills/status/2105963768446632219",
+        "sourceName": "Charlie Hills",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "Anthropic 的秘密宗教会面：他们为什么要给 Claude“立心”？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/anthropic-claude-morals-consciousness/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mur5fqce-i7hw",
+    "trigger": "cron",
+    "startedAt": "2026-10-02T15:59:59.006Z",
+    "finishedAt": "2026-10-02T16:10:36.439Z",
+    "durationMs": 637433,
+    "discovered": 5,
+    "published": 5,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Anthropic 的秘密宗教会面：他们为什么要给 Claude“立心”？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/anthropic-claude-morals-consciousness/",
+        "status": "published",
+        "slug": "anthropic-claude-morals-consciousness",
+        "upstreamUrl": "https://www.nytimes.com/2026/09/29/us/anthropic-claude-morals-ai.html",
+        "sourceName": "Elizabeth Dias",
+        "resolution": "xiaohu"
+      },
+      {
+        "title": "a16z 市场报告解读：AI 的钱流向硬件，软件要重新证明自己",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/a16z-state-of-markets-ii/",
+        "status": "published",
+        "slug": "a16z-state-of-markets-ii",
+        "upstreamUrl": "https://www.a16z.news/p/state-of-markets-ii",
+        "sourceName": "David George / a16z",
+        "resolution": "read-original"
+      },
+      {
+        "title": "为什么 Atlas 的新机器手只有四根手指？波士顿动力的工业取舍...",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/boston-dynamics-atlas-robot-hands/",
+        "status": "published",
+        "slug": "boston-dynamics-atlas-robot-hands",
+        "upstreamUrl": "https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/",
+        "sourceName": "Boston Dynamics",
+        "resolution": "read-original"
+      },
+      {
+        "title": "你可以定制自己的 Claude Code 了：改界面、拦住危险命令、逐步查看代码改动",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-code-mods/",
+        "status": "published",
+        "slug": "claude-code-mods",
+        "upstreamUrl": "https://claude.dev/blog/getting-started-with-claude-code-mods/",
+        "sourceName": "Anthropic / Addy Osmani",
+        "resolution": "read-original"
+      },
+      {
+        "title": "Tavus 发布面对面交互模型 Griffin 称其为首个通过实时视频图灵测试的模型",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/tavus-griffin/",
+        "status": "published",
+        "slug": "tavus-griffin",
+        "upstreamUrl": "https://www.tavus.io/griffin",
+        "sourceName": "Tavus Research",
+        "resolution": "read-original"
+      }
+    ]
+  },
+  {
     "id": "run-muppzvof-zzzf",
     "trigger": "cron",
     "startedAt": "2026-10-01T15:59:59.007Z",
