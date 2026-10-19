@@ -26,3 +26,6 @@ Thumbs.db
 # Build artifacts
 *.tgz
 *.zip
+
+# Runtime artifacts
+*.pid

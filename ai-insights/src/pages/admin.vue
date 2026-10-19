@@ -144,16 +144,19 @@ interface RunItem {
   paid?: boolean
   /** 溯源方式:anchor=阅读原文锚点 / search=网络搜索 */
   resolution?: string
-  /** 正文抓取方式(固定三值):upstream-http=上游原文·HTTP / upstream-cdp=上游原文·CDP / xiaohu=小互站点爬取 */
-  fetchMethod?: 'upstream-http' | 'upstream-cdp' | 'xiaohu'
+  /** 正文抓取方式(固定四值):upstream-http=上游原文·HTTP / upstream-cdp=上游原文·CDP / xiaohu=小互站点爬取 / proxy=代理 */
+  fetchMethod?: 'upstream-http' | 'upstream-cdp' | 'xiaohu' | 'proxy'
   error?: string
+  /** 代理错误码(如 E_CDP_CAPTCHA) */
+  proxyErrorCode?: string
 }
 
-/** 抓取方式展示文案(管理台每个链接标注,固定三值) */
+/** 抓取方式展示文案(管理台每个链接标注,固定四值) */
 const FETCH_METHOD_LABEL: Record<NonNullable<RunItem['fetchMethod']>, string> = {
   'upstream-http': '上游原文 · HTTP',
   'upstream-cdp': '上游原文 · CDP',
   'xiaohu': '小互站点爬取',
+  'proxy': '代理 · crawler-proxy',
 }
 interface RunReport {
   id: string
@@ -313,6 +316,26 @@ function fmtDuration(ms: number): string {
   return `${(ms / 60_000).toFixed(1)}min`
 }
 
+/** 解析代理错误码:从 `[E_CDP_CAPTCHA] captcha blocked ...` 提取 code 和 message */
+function formatProxyError(error: string): { code: string; message: string } | null {
+  const match = error.match(/\[([A-Z_]+)\]\s*(.*)$/)
+  if (!match) return null
+  return { code: match[1], message: match[2].trim() }
+}
+
+/** 代理错误码 → 简短中文描述 */
+function proxyErrorDesc(code: string): string {
+  const desc: Record<string, string> = {
+    E_CDP_NAVIGATE: '导航失败(网络不通/域名不存在)',
+    E_CDP_CAPTCHA: '验证码拦截(知乎等反爬)',
+    E_CDP_EXTRACT: '提取失败(JS 崩溃/页面异常)',
+    E_PARAM_MISSING: '缺少 url 参数',
+    E_GEO_BLOCKED: '地区限制',
+    E_RATE_LIMIT: '频率限制',
+  }
+  return desc[code] || `代理错误: ${code}`
+}
+
 /** 最近一次运行里失败的文章(待人工处理) */
 const failedItems = computed<RunItem[]>(() => {
   const run = agg.value?.runs?.[0]
@@ -462,6 +485,7 @@ const failedItems = computed<RunItem[]>(() => {
             <div v-for="(f, i) in failedItems" :key="i" class="agg-failed-row">
               <div class="agg-failed-main">
                 <strong>{{ f.title }}</strong>
+                <span v-if="formatProxyError(f.error || '')" class="chip chip-proxy-error">{{ formatProxyError(f.error || '').code }}</span>
                 <span class="agg-error">{{ f.error }}</span>
               </div>
               <div class="agg-failed-links">
@@ -514,6 +538,7 @@ const failedItems = computed<RunItem[]>(() => {
                       <a v-if="item.xiaohuUrl" :href="item.xiaohuUrl" target="_blank" rel="noopener" class="agg-src">小互AI解读 ↗</a>
                       <a v-if="item.upstreamUrl" :href="item.upstreamUrl" target="_blank" rel="noopener" class="agg-src">原文 ↗</a>
                       <span v-if="item.sourceName" class="agg-src">{{ item.sourceName }}</span>
+                      <span v-if="formatProxyError(item.error || '')" class="chip chip-proxy-error">{{ formatProxyError(item.error || '').code }}</span>
                       <span v-if="item.error" class="agg-error">{{ item.error }}</span>
                     </div>
                   </td>

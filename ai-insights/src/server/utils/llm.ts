@@ -15,7 +15,7 @@ const OPENROUTER_MODEL = () => process.env.OPENROUTER_MODEL || 'deepseek/deepsee
 
 /** 本地 OpenAI 兼容服务候选地址,逗号分隔(oMLX 首选,LM Studio / mlx_lm 备用) */
 const LOCAL_BASES = () =>
-  (process.env.LOCAL_LLM_BASES || 'http://127.0.0.1:18000/v1,http://127.0.0.1:1234/v1,http://127.0.0.1:8080/v1')
+  (process.env.LOCAL_LLM_BASES || 'http://127.0.0.1:18000/v1,http://127.0.0.1:28000/v1,http://127.0.0.1:1234/v1,http://127.0.0.1:8080/v1')
     .split(',').map(s => s.trim()).filter(Boolean)
 const LOCAL_KEY = () => process.env.LOCAL_LLM_API_KEY || 'fa6d628467476459e0781e53e659c66c52cd5b91d408df61ab68aaee5737264e'
 /** 本地首选模型 id;若候选服务的 /models 列表中没有,则回退取第一个 */

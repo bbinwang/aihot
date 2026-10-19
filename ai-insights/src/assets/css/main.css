@@ -480,6 +480,10 @@ img { max-width: 100%; }
 .chip-fetch-upstream-http { color: #0969da; border-color: rgba(9, 105, 218, 0.4); background: rgba(9, 105, 218, 0.08); }
 .chip-fetch-upstream-cdp { color: #8250df; border-color: rgba(130, 80, 223, 0.4); background: rgba(130, 80, 223, 0.08); }
 .chip-fetch-xiaohu { color: #bf8700; border-color: rgba(191, 135, 0, 0.4); background: rgba(191, 135, 0, 0.08); }
+/* 代理抓取方式 chip */
+.chip-fetch-proxy { color: #e45135; border-color: rgba(228, 81, 53, 0.4); background: rgba(228, 81, 53, 0.08); }
+/* 代理错误码 chip */
+.chip-proxy-error { color: #d73a49; border-color: rgba(215, 58, 73, 0.5); background: rgba(215, 58, 73, 0.1); }
 .agg-src { color: var(--text-3); font-size: 12px; white-space: nowrap; }
 .agg-src:hover { color: var(--accent); }
 

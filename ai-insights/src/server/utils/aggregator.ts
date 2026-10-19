@@ -50,7 +50,7 @@ export type RunItemStatus = 'published' | 'failed' | 'skipped'
  *   upstream-cdp   上游原文经 CDP 真浏览器渲染直爬
  *   xiaohu         小互站点爬取(解读站正文,纯 HTTP 或 CDP 渲染小互页)
  */
-export type FetchMethod = 'upstream-http' | 'upstream-cdp' | 'xiaohu'
+export type FetchMethod = 'upstream-http' | 'upstream-cdp' | 'xiaohu' | 'proxy'
 
 export interface RunItem {
   title: string
@@ -448,7 +448,43 @@ async function fetchXiaohu(url: string, opts: { fetcher?: Fetcher } = {}): Promi
 
 interface UpstreamResult {
   markdown: string
-  strategy: 'github-readme' | 'md-suffix' | 'html' | 'llms-full'
+  strategy: 'github-readme' | 'md-suffix' | 'html' | 'llms-full' | 'site-proxy' | 'proxy'
+}
+
+/** crawler-proxy 错误响应解析结果 */
+interface ProxyErrorResult {
+  code: string
+  message: string
+}
+
+/**
+ * 从 crawler-proxy 错误响应中解析错误码与原因。
+ * 格式: `[E_CDP_CAPTCHA] captcha blocked (cannot fetch automatically)`
+ */
+function parseProxyError(errorText: string): ProxyErrorResult | null {
+  const match = errorText.match(/^\[([A-Z_]+)\]\s*(.*)$/m)
+  if (!match) return null
+  return { code: match[1], message: match[2].trim() }
+}
+
+/**
+ * 通过 crawler-proxy(本机 8787 端口)抓取页面。
+ * proxy 返回已提取的 Markdown 正文；失败时抛出 `[E_XXX] ...` 格式的 Error。
+ * 由调用方负责判废与错误码解析。
+ */
+async function fetchViaCrawlerProxy(
+  url: string,
+  fetcher: Fetcher,
+): Promise<{ markdown: string } | { error: ProxyErrorResult }> {
+  const proxyUrl = SITE_PROXY_URL().replace('{url}', encodeURIComponent(url))
+  const text = await fetchText(proxyUrl, { fetcher, timeoutMs: 60_000 })
+  // 判断是否是错误响应:以 [ 开头
+  if (text.startsWith('[')) {
+    const err = parseProxyError(text)
+    if (err) return { error: err }
+  }
+  // 成功:proxy 返回已提取的 Markdown
+  return { markdown: text }
 }
 
 /** 拦截页特征:地区限制 / 反爬盾 / 要求开 JS */
@@ -533,6 +569,42 @@ async function fetchViaLlmsFull(url: string, fetcher: Fetcher): Promise<string |
   return seg
 }
 
+// ---------------------------------------------------------------------------
+// 白名单站点直连代理:twitter/reddit 等被墙 + JS 渲染站,本地直连/CDP 均无意义。
+// 命中 PROXY_SITES 即跳过直连,只走 SITE_PROXY_URL 指向的海外代理服务
+// (代理端负责跟随重定向与平台适配提取,返回 text 正文;本地仅做判废校验)。
+// ---------------------------------------------------------------------------
+
+/** 白名单域名(逗号分隔,后缀匹配:reddit.com 命中 www.reddit.com) */
+const PROXY_SITES = () =>
+  (process.env.PROXY_SITES || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+
+/** 代理服务 URL 模板,含 {url} 占位(如 https://proxy.example.com/fetch?url={url}&token=xxx);未配置 = 功能关闭 */
+const SITE_PROXY_URL = () => process.env.SITE_PROXY_URL || ''
+
+function isProxiedSite(url: string): boolean {
+  if (!SITE_PROXY_URL()) return false
+  let host: string
+  try { host = new URL(url).hostname.toLowerCase() } catch { return false }
+  return PROXY_SITES().some(d => host === d || host.endsWith('.' + d))
+}
+
+/** 白名单站点:URL → 代理服务 → 已提取的 text 正文(重试 2 次,失败抛错交分级兜底接管) */
+async function fetchViaSiteProxy(url: string, fetcher: Fetcher): Promise<UpstreamResult> {
+  const target = SITE_PROXY_URL().replace('{url}', encodeURIComponent(url))
+  let lastError: unknown
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const text = await fetchText(target, { fetcher, timeoutMs: 45_000 })
+      assertUsableContent(text)
+      return { markdown: text, strategy: 'site-proxy' }
+    } catch (err) {
+      lastError = err
+    }
+  }
+  throw new Error(`白名单站点代理抓取失败: ${lastError instanceof Error ? lastError.message : String(lastError)}`)
+}
+
 async function fetchUpstreamOnce(url: string, fetcher: Fetcher): Promise<UpstreamResult> {
   // 策略 1:GitHub 仓库根路径 → README 原文(国内直连可达)
   const gh = url.match(/^https?:\/\/(?:www\.)?github\.com\/([\w.-]+)\/([\w.-]+)\/?$/)
@@ -565,12 +637,15 @@ async function fetchUpstreamOnce(url: string, fetcher: Fetcher): Promise<Upstrea
   return { markdown, strategy: 'html' }
 }
 
-/** 抓上游原文,整体重试 3 次(指数退避) */
+/** 抓上游原文:白名单站点只走代理服务;其余整体重试 3 次(指数退避) */
 export async function fetchUpstreamMarkdown(
   url: string,
   opts: { fetcher?: Fetcher } = {},
 ): Promise<UpstreamResult> {
   const fetcher = opts.fetcher || (globalThis.fetch as unknown as Fetcher)
+  // 白名单站点(twitter/reddit 等被墙站):直连无意义,跳过;代理失败直接抛错,
+  // 由分级兜底(会员 CDP→小互解读 / 非会员小互解读)接管,不浪费直连重试
+  if (isProxiedSite(url)) return fetchViaSiteProxy(url, fetcher)
   let lastError: unknown
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -597,7 +672,24 @@ export async function fetchUpstreamMarkdown(
       if (attempt < 3) await sleep(1500 * attempt)
     }
   }
-  throw new Error(`上游原文抓取失败(已重试3次): ${lastError instanceof Error ? lastError.message : String(lastError)}`)
+  // 通用兜底:crawler-proxy(同一 URL 重试 2 次);未配置 SITE_PROXY_URL = 功能关闭,保留直连错误原样抛出
+  if (!SITE_PROXY_URL()) {
+    throw new Error(`上游原文抓取失败(已重试3次): ${lastError instanceof Error ? lastError.message : String(lastError)}`)
+  }
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const result = await fetchViaCrawlerProxy(url, fetcher)
+      if ('markdown' in result) return { markdown: result.markdown, strategy: 'proxy' }
+      if (result.error) throw new Error(`crawler-proxy 抓取失败(${result.error.code}): ${result.error.message}`)
+      // 意外返回:标记为错误
+      throw new Error('crawler-proxy 返回内容非预期格式')
+    } catch (err) {
+      // 首次失败退避后重试一次
+      if (attempt < 2) await sleep(3000)
+      lastError = err
+    }
+  }
+  throw new Error(`上游原文抓取失败(已重试3次+代理2次): ${lastError instanceof Error ? lastError.message : String(lastError)}`)
 }
 
 // ---------------------------------------------------------------------------
@@ -684,12 +776,12 @@ async function fetchTieredContent(
   item: FeedItem,
   source: { sourceName: string; upstreamUrl: string },
   opts: { fetcher?: Fetcher; browserFetcher?: BrowserFetcher; resolution?: RunItem['resolution'] },
-): Promise<{ markdown: string; note?: string; resolution?: RunItem['resolution'] }> {
+): Promise<{ markdown: string; note?: string; resolution?: RunItem['resolution']; fetchMethod?: FetchMethod }> {
   let upErr: unknown
   try {
     const upstream = await fetchUpstreamMarkdown(source.upstreamUrl, { fetcher: opts.fetcher })
     if (!upstream.markdown.trim()) throw new Error('上游原文内容为空')
-    return { markdown: upstream.markdown, resolution: opts.resolution }
+    return { markdown: upstream.markdown, resolution: opts.resolution, fetchMethod: upstream.strategy === 'proxy' ? 'proxy' : opts.resolution ? toFetchMethod(opts.resolution) : undefined }
   } catch (err) {
     upErr = err
   }
@@ -726,14 +818,16 @@ async function fetchTieredContent(
 }
 
 /**
- * 由最终 resolution 推导管理台展示的抓取方式(固定三值):
+ * 由最终 resolution 推导管理台展示的抓取方式(固定四值):
  *   cdp            → 上游原文 · CDP 真浏览器直爬
  *   xiaohu/cdp-xiaohu → 小互站点爬取(解读站正文,HTTP 或 CDP 渲染小互页)
+ *   proxy          → 经 crawler-proxy 代理抓取
  *   其余(read-original/external-link/web-search/manual)→ 上游原文 · HTTP
  */
 function toFetchMethod(resolution: RunItem['resolution']): FetchMethod | undefined {
   if (resolution === 'cdp') return 'upstream-cdp'
   if (resolution === 'xiaohu' || resolution === 'cdp-xiaohu') return 'xiaohu'
+  if (resolution === 'proxy') return 'proxy'
   if (resolution) return 'upstream-http'
   return undefined
 }
@@ -872,7 +966,7 @@ async function processItem(
       upstreamUrl: source.upstreamUrl,
       sourceName: source.sourceName,
       resolution: fetched.resolution,
-      fetchMethod: toFetchMethod(fetched.resolution),
+      fetchMethod: fetched.fetchMethod || toFetchMethod(fetched.resolution),
     }
   } catch (err) {
     // 失败也要带上已溯源到的上游链接,管理台「待人工处理」才能一键重爬

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterEach, beforeEach } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, afterEach, beforeEach } from 'vitest'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -505,6 +505,118 @@ describe('crawlAndPublish', () => {
       .rejects.toThrow(/已重试3次/)
     await expect(fetchUpstreamMarkdown('https://noblog.example.org/b', { fetcher }))
       .rejects.toThrow(/已重试3次/)
+  }, 60_000)
+})
+
+/* ---------- 白名单站点直连代理(site-proxy 路由,打桩验证) ---------- */
+
+describe('fetchUpstreamMarkdown · 白名单站点直连代理', () => {
+  /** 一条够长的推文正文(≥400 字符,过判废阈值) */
+  const TWEET_TEXT = [
+    '@alice · 2026-10-18 · x.com/alice/status/1234567890',
+    '',
+    'We just shipped something huge! This release covers the new agent runtime, tool sandboxing, and a faster streaming path. ' +
+      'Migration notes and benchmarks are in the thread below. '.repeat(6),
+    '',
+    'https://example.com/blog/launch-notes',
+  ].join('\n')
+
+  const REDDIT_TEXT = 'r/LocalLLaMA · u/bob · 2026-10-17\n\nPost: running 70B locally\n\n' +
+    'Discussion about quantization tradeoffs, memory bandwidth, and real-world tokens per second across consumer GPUs. '.repeat(6)
+
+  let calls: string[]
+
+  /** 记录每次请求 URL 的 mock fetch:是否打过直连只能看 calls(未命中路由一律 404) */
+  function recordingFetch(routes: Route[]): Fetcher {
+    calls = []
+    return (async (url: string) => {
+      calls.push(url)
+      for (const r of routes) {
+        const hit = typeof r.match === 'string' ? url.includes(r.match) : r.match.test(url)
+        if (hit) return new Response(r.body, { status: r.status ?? 200 })
+      }
+      return new Response('not found', { status: 404 })
+    }) as unknown as Fetcher
+  }
+
+  beforeAll(() => {
+    process.env.PROXY_SITES = 'x.com,twitter.com,t.co,reddit.com'
+    process.env.SITE_PROXY_URL = 'https://proxy.example.com/fetch?url={url}&token=t0ps3cret'
+  })
+  afterAll(() => {
+    delete process.env.PROXY_SITES
+    delete process.env.SITE_PROXY_URL
+  })
+
+  // 前面的 runAggregation suite 已把同一 RSS 链接记入 processedUrls,重置后才能重新发现
+  beforeEach(() => fs.writeFileSync(path.join(aggDir, 'state.json'), JSON.stringify({
+    lastRunAt: null, lastSlotAt: null, processedUrls: [], publishedCount: 0,
+  })))
+
+  it('白名单 URL:只请求代理模板(目标已编码、token 保留),无任何直连', async () => {
+    const fetcher = recordingFetch([{ match: 'proxy.example.com/fetch', body: TWEET_TEXT }])
+    const res = await fetchUpstreamMarkdown('https://x.com/alice/status/1234567890', { fetcher })
+    expect(res.strategy).toBe('site-proxy')
+    expect(res.markdown).toContain('We just shipped something huge!')
+    expect(calls).toEqual([
+      `https://proxy.example.com/fetch?url=${encodeURIComponent('https://x.com/alice/status/1234567890')}&token=t0ps3cret`,
+    ])
+  })
+
+  it('子域名后缀匹配:www.reddit.com 命中 reddit.com', async () => {
+    const fetcher = recordingFetch([{ match: 'proxy.example.com/fetch', body: REDDIT_TEXT }])
+    const res = await fetchUpstreamMarkdown('https://www.reddit.com/r/LocalLLaMA/comments/abc123/nn/', { fetcher })
+    expect(res.strategy).toBe('site-proxy')
+    expect(calls[0]).toContain(encodeURIComponent('https://www.reddit.com/r/LocalLLaMA/comments/abc123/nn/'))
+  })
+
+  it('非白名单 host 不受影响:仍走直连策略,不打代理', async () => {
+    const fetcher = recordingFetch([
+      { match: 'api.github.com/repos/foo/bar/readme', body: '# Bar Project\n\nA useful tool. ' + 'Details and usage examples here. '.repeat(10) },
+    ])
+    const res = await fetchUpstreamMarkdown('https://github.com/foo/bar', { fetcher })
+    expect(res.strategy).toBe('github-readme')
+    expect(calls.some(c => c.includes('proxy.example.com'))).toBe(false)
+  })
+
+  it('代理 502:重试 2 次后抛错,期间不发任何直连请求', async () => {
+    const fetcher = recordingFetch([{ match: 'proxy.example.com/fetch', status: 502, body: '{"error":"upstream failed"}' }])
+    await expect(fetchUpstreamMarkdown('https://twitter.com/alice/status/999', { fetcher }))
+      .rejects.toThrow(/白名单站点代理抓取失败/)
+    expect(calls.filter(c => c.includes('proxy.example.com'))).toHaveLength(2)
+    expect(calls.some(c => !c.includes('proxy.example.com'))).toBe(false)
+  }, 30_000)
+
+  it('代理返回过短正文(<400 字符):判废,重试后抛错(不把空壳当正文)', async () => {
+    const fetcher = recordingFetch([{ match: 'proxy.example.com/fetch', body: 'short tweet' }])
+    await expect(fetchUpstreamMarkdown('https://x.com/alice/status/888', { fetcher }))
+      .rejects.toThrow(/白名单站点代理抓取失败: 正文过短/)
+    expect(calls).toHaveLength(2)
+  }, 30_000)
+
+  it('全管线:小互「阅读原文」指向推文 → RSS→溯源→代理→翻译→发布', async () => {
+    const tweetPage = ARTICLE_PAGE
+      .replace('https://example.com/post', 'https://x.com/alice/status/1234567890')
+      .replace('Example Corp', 'X (Twitter)')
+    const fetcher = recordingFetch([
+      { match: 'rss.xml', body: rssXml(true) },
+      { match: 'best.xiaohu.ai/article/test-one', body: tweetPage },
+      { match: 'proxy.example.com/fetch', body: TWEET_TEXT },
+      ZHIPU_OK,
+    ])
+    const report = await runAggregation('manual', { fetcher })
+    expect(report.published).toBe(1)
+    expect(report.failed).toBe(0)
+    const item = report.items[0]
+    expect(item.status).toBe('published')
+    expect(item.upstreamUrl).toBe('https://x.com/alice/status/1234567890')
+    expect(item.sourceName).toBe('X (Twitter)')
+    expect(item.fetchMethod).toBe('upstream-http')
+    // 全管线只发过 4 类请求:RSS、小互文章页、代理、智谱翻译;上游直连(x.com)从未被请求
+    expect(calls.some(c => c.includes('x.com/alice') && !c.includes('proxy.example.com'))).toBe(false)
+    // slug 冲突自动追加序号(旧 suite 已写 test-one.md),按实际 slug 断言
+    const file = path.join(articlesDir, `${item.slug}.md`)
+    expect(fs.readFileSync(file, 'utf-8')).toContain('[https://x.com/alice/status/1234567890](https://x.com/alice/status/1234567890)')
   }, 60_000)
 })
 
