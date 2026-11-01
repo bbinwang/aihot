@@ -1,5 +1,974 @@
 [
   {
+    "id": "run-mvwl7fp7-4q88",
+    "trigger": "cron",
+    "startedAt": "2026-10-31T15:59:59.035Z",
+    "finishedAt": "2026-10-31T16:07:41.689Z",
+    "durationMs": 462654,
+    "discovered": 6,
+    "published": 6,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Sam Altman：AI越强，为什么越需要分工？更想要一万亿个略超人类的 AI，而不是一个超级大脑？",
+        "xiaohuUrl": "https://xiaohu.ai/article/sam-altman-single-superintelligence/",
+        "status": "published",
+        "paid": false,
+        "slug": "sam-altman-single-superintelligence",
+        "upstreamUrl": "https://www.youtube.com/watch?v=iMsUcCYNKqY",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "如何将企业的品牌指南转变为内容工厂：用 Lovart Arti 搭一套 AI 内容引擎",
+        "xiaohuUrl": "https://xiaohu.ai/article/amir-brand-system-leaf/",
+        "status": "published",
+        "paid": false,
+        "slug": "amir-brand-system-leaf",
+        "upstreamUrl": "https://x.com/AmirMushich/status/2115868164965703747",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "AI 时代的下一个万亿级平台机会：一个记录“决策过程与理由”而非仅仅“业务对象”的全新底层系统",
+        "xiaohuUrl": "https://xiaohu.ai/article/jaya-context-graphs/",
+        "status": "published",
+        "paid": false,
+        "slug": "jaya-context-graphs",
+        "upstreamUrl": "https://x.com/jayagup10/status/2003525933534179480",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "红杉资本：下一家万亿美元公司，可能用 AI 交付完整服务",
+        "xiaohuUrl": "https://xiaohu.ai/article/sequoia-sell-the-work/",
+        "status": "published",
+        "paid": false,
+        "slug": "sequoia-sell-the-work",
+        "upstreamUrl": "https://x.com/guilleflorvs/status/2116109740832936033",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Idol：仅从一张图像生成完整的 3D 对象 只有 6 亿参数，可在消费级 GPU 上运行",
+        "xiaohuUrl": "https://xiaohu.ai/article/speridlabs-idol-image-to-3d/",
+        "status": "published",
+        "paid": false,
+        "slug": "speridlabs-idol-image-to-3d",
+        "upstreamUrl": "https://x.com/speridlabs/status/2115890658636656826",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "YC 想投的 11 个创业方向：AI 变强以后，还缺什么？",
+        "xiaohuUrl": "https://xiaohu.ai/article/yc-rfs-ai-real-economy/",
+        "status": "published",
+        "paid": false,
+        "slug": "yc-rfs-ai-real-economy",
+        "upstreamUrl": "https://www.ycombinator.com/rfs",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mvv5rl2b-6vvc",
+    "trigger": "cron",
+    "startedAt": "2026-10-30T15:59:59.075Z",
+    "finishedAt": "2026-10-30T16:18:42.910Z",
+    "durationMs": 1123835,
+    "discovered": 5,
+    "published": 5,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Neuralink 首款产品 Telepathy（心灵感应）：用意念指挥 Grok Bot 干活",
+        "xiaohuUrl": "https://xiaohu.ai/article/neuralink-72-hour-speech-hackathon/",
+        "status": "published",
+        "paid": false,
+        "slug": "neuralink-72-hour-speech-hackathon",
+        "upstreamUrl": "https://neuralink.com/updates/72-hour-voice-hackathon/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Claude Code工程师：你可能给 Claude 写了太多提示词：哪些该删，哪些要讲清楚",
+        "xiaohuUrl": "https://xiaohu.ai/article/claude-overprompting/",
+        "status": "published",
+        "paid": false,
+        "slug": "claude-overprompting",
+        "upstreamUrl": "https://x.com/addyosmani/status/2115688494865465370",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "a16z AD50报告：AI 走进车间：从一张图纸到持续交货，还差什么？",
+        "xiaohuUrl": "https://xiaohu.ai/article/a16z-ad50-production-deterrence/",
+        "status": "published",
+        "paid": false,
+        "slug": "a16z-ad50-production-deterrence",
+        "upstreamUrl": "https://www.a16z.news/p/ad-50-2026-production-is-deterrence",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "OpenAI 两位作者谈公司的未来：AI 会怎样改变分工与权力",
+        "xiaohuUrl": "https://xiaohu.ai/article/openai-future-of-the-firm/",
+        "status": "published",
+        "paid": false,
+        "slug": "openai-future-of-the-firm",
+        "upstreamUrl": "https://openai.com/index/the-future-of-the-firm/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Canva 发布专门的设计编辑与视觉语言模型 Brush：一句话修改整套设计，文字和图片还能接着改",
+        "xiaohuUrl": "https://xiaohu.ai/article/canva-brush-design-model/",
+        "status": "published",
+        "paid": false,
+        "slug": "canva-brush-design-model",
+        "upstreamUrl": "https://www.canva.com/newsroom/news/canva-brush/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "proxy"
+      }
+    ]
+  },
+  {
+    "id": "run-mvtqbqct-08re",
+    "trigger": "cron",
+    "startedAt": "2026-10-29T15:59:59.021Z",
+    "finishedAt": "2026-10-29T16:03:34.777Z",
+    "durationMs": 215756,
+    "discovered": 5,
+    "published": 5,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "企业AI 服务第一单怎么卖？先带员工干活，再谈系统开发",
+        "xiaohuUrl": "https://xiaohu.ai/article/ai-agency-enablement-first/",
+        "status": "published",
+        "paid": false,
+        "slug": "ai-agency-enablement-first",
+        "upstreamUrl": "https://x.com/lukepierceops/status/2115189554785452224",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Dan Koe：“网红模式”将死，我们将迎来一个“经验时代”，你需要争做“手艺人”",
+        "xiaohuUrl": "https://xiaohu.ai/article/dan-koe-age-of-experience/",
+        "status": "published",
+        "paid": false,
+        "slug": "dan-koe-age-of-experience",
+        "upstreamUrl": "https://x.com/thedankoe/status/2112586533610156368",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Google 发布 Gemini 4 Carbon：主攻持续多天的编程任务，强化漏洞发现与修复",
+        "xiaohuUrl": "https://xiaohu.ai/article/gemini-4-carbon/",
+        "status": "published",
+        "paid": false,
+        "slug": "gemini-4-carbon",
+        "upstreamUrl": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "NVIDIA 发布 Nemotron 3.5 Transcribe：转写和翻译录音，还能分清谁在说话",
+        "xiaohuUrl": "https://xiaohu.ai/article/nvidia-nemotron-35-transcribe/",
+        "status": "published",
+        "paid": false,
+        "slug": "nvidia-nemotron-35-transcribe",
+        "upstreamUrl": "https://x.com/nvidiaai/status/2115462300241141882",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Claude Code Mods 上手指南：你可以定制自己的 Claude Code",
+        "xiaohuUrl": "https://xiaohu.ai/article/claude-code-mods/",
+        "status": "published",
+        "paid": false,
+        "slug": "claude-code-mods-2",
+        "upstreamUrl": "https://x.com/addyosmani/status/2115326629488824753",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      }
+    ]
+  },
+  {
+    "id": "run-mvsavvow-ac8g",
+    "trigger": "cron",
+    "startedAt": "2026-10-28T15:59:59.024Z",
+    "finishedAt": "2026-10-28T16:33:26.672Z",
+    "durationMs": 2007648,
+    "discovered": 14,
+    "published": 14,
+    "failed": 0,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "代码还没写完，也能请同事接着做：Delta 为 Claude Code 加上多人协作",
+        "xiaohuUrl": "https://xiaohu.ai/article/delta-claude-code-multiplayer/",
+        "status": "published",
+        "paid": false,
+        "slug": "delta-claude-code-multiplayer",
+        "upstreamUrl": "https://delta.dev/blog/claude-code-multiplayer",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Anthropic 收购一家药企 公司只有一个人：一个研究员如何用 Claude 协调 11 家实验室",
+        "xiaohuUrl": "https://xiaohu.ai/article/mithril-medicine-pipeline-in-a-person/",
+        "status": "published",
+        "paid": false,
+        "slug": "mithril-medicine-pipeline-in-a-person",
+        "upstreamUrl": "https://www.anthropic.com/research/early-progress-drug-development",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Grok Imagine 公开《奥德赛》短片制作教程：小团队怎样把 AI 镜头连成故事",
+        "xiaohuUrl": "https://xiaohu.ai/article/grok-imagine-odyssey-film-workflow/",
+        "status": "published",
+        "paid": false,
+        "slug": "grok-imagine-odyssey-film-workflow",
+        "upstreamUrl": "https://x.com/imagine/status/2115214583983935517",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Anthropic 实验：现实并非“人类掌控全局”，人类专家在不知不觉中将关键决策的控制权拱手让给了 AI",
+        "xiaohuUrl": "https://xiaohu.ai/article/anthropic-agents-judgment-calls/",
+        "status": "published",
+        "paid": false,
+        "slug": "anthropic-agents-judgment-calls",
+        "upstreamUrl": "https://www.anthropic.com/research/agents-judgment-calls",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "医疗 AI 公司 Concurrence 推出“超智能AI照护” ：让每次照护，都成为下一位病人的经验",
+        "xiaohuUrl": "https://xiaohu.ai/article/concurrence-superintelligent-care/",
+        "status": "published",
+        "paid": false,
+        "slug": "concurrence-superintelligent-care",
+        "upstreamUrl": "https://x.com/khookhar/status/2115137228846567684",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "AI 让学习提速后，学校该怎样改变？从 Alpha School 到 a16z 新学院",
+        "xiaohuUrl": "https://xiaohu.ai/article/a16z-alpha-school-ai-education/",
+        "status": "published",
+        "paid": false,
+        "slug": "a16z-alpha-school-ai-education",
+        "upstreamUrl": "https://x.com/a16z/status/2115091994699804998",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Liquid AI 发布 LFM3 端侧模型：可以在手机上运行，视觉评测比肩 Gemini 3.5 Flash Lite，覆盖看、听、说和工具调用",
+        "xiaohuUrl": "https://xiaohu.ai/article/liquid-lfm3/",
+        "status": "published",
+        "paid": false,
+        "slug": "liquid-lfm3",
+        "upstreamUrl": "https://x.com/liquidai/status/2115128329003303107",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Databricks：当员工开始指挥 Agent，公司该怎样运转？",
+        "xiaohuUrl": "https://xiaohu.ai/article/a16z-databricks-future-of-firm/",
+        "status": "published",
+        "paid": false,
+        "slug": "a16z-databricks-future-of-firm",
+        "upstreamUrl": "https://www.a16z.news/p/databricks-and-the-future-of-the",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "AI 重查一项上万页的数学证明，发现漏洞后，又证明了新定理",
+        "xiaohuUrl": "https://xiaohu.ai/article/axiom-cfsg-lean/",
+        "status": "published",
+        "paid": false,
+        "slug": "axiom-cfsg-lean",
+        "upstreamUrl": "https://x.com/axiommathai/status/2115089794867040584",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Browserbase 开源 BELL：一个支持接收 iMessage信息、浏览器操作和能付款的个人 AI 助理",
+        "xiaohuUrl": "https://xiaohu.ai/article/browserbase-bell-personal-assistant/",
+        "status": "published",
+        "paid": false,
+        "slug": "browserbase-bell-personal-assistant",
+        "upstreamUrl": "https://x.com/browserbase/status/2114777924335554605",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "GitHub 研究员谈 Agent 规划：先看见方案的后果，再决定怎么做",
+        "xiaohuUrl": "https://xiaohu.ai/article/planning-with-agents-thicker-interfaces/",
+        "status": "published",
+        "paid": false,
+        "slug": "planning-with-agents-thicker-interfaces",
+        "upstreamUrl": "https://maggieappleton.com/planning-agents",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Google DeepMind 发布 Genie 4：能实时改场景、与角色对话的世界模型",
+        "xiaohuUrl": "https://xiaohu.ai/article/genie-4-interactive-world/",
+        "status": "published",
+        "paid": false,
+        "slug": "genie-4-interactive-world",
+        "upstreamUrl": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "别再陪着 AI 一步步改代码：Thorsten Ball 的 15 条 Agent 协作建议",
+        "xiaohuUrl": "https://xiaohu.ai/article/thorsten-ball-how-i-work-with-agents/",
+        "status": "published",
+        "paid": false,
+        "slug": "thorsten-ball-how-i-work-with-agents",
+        "upstreamUrl": "https://x.com/i/article/2114385531811319808",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "苹果 M6 MacBook Pro 与 iMac 发布：升级在哪，配置怎么选",
+        "xiaohuUrl": "https://xiaohu.ai/article/apple-m6-macbook-pro-imac/",
+        "status": "published",
+        "paid": false,
+        "slug": "apple-m6-macbook-pro-imac",
+        "upstreamUrl": "https://www.apple.com/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Replit CEO：未来的公司都是「全自动驾驶公司」，人定方向，Agent 来跑落地",
+        "xiaohuUrl": "https://xiaohu.ai/article/replit-rise-of-self-driving-company/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mvqvg10m-smhu",
+    "trigger": "cron",
+    "startedAt": "2026-10-27T15:59:59.014Z",
+    "finishedAt": "2026-10-27T16:21:09.313Z",
+    "durationMs": 1270299,
+    "discovered": 5,
+    "published": 5,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "AI 写的句子为什么读着累？研究揭示导致阅读疲劳的 AI 文本六大模式",
+        "xiaohuUrl": "https://xiaohu.ai/article/why-ai-text-is-hard-to-read/",
+        "status": "published",
+        "paid": false,
+        "slug": "why-ai-text-is-hard-to-read",
+        "upstreamUrl": "https://arxiv.org/abs/2610.29162",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "ElevenLabs 科普语音合成技术实现原理：文字是怎么变成自然的人类语音的",
+        "xiaohuUrl": "https://xiaohu.ai/article/elevenlabs-how-tts-works/",
+        "status": "published",
+        "paid": false,
+        "slug": "elevenlabs-how-tts-works",
+        "upstreamUrl": "https://elevenlabs.io/blog/how-text-to-speech-technology-works",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Replit CEO：未来的公司都是「全自动驾驶公司」，人定方向，Agent 来跑落地",
+        "xiaohuUrl": "https://xiaohu.ai/article/replit-rise-of-self-driving-company/",
+        "status": "published",
+        "paid": false,
+        "slug": "replit-rise-of-self-driving-company",
+        "upstreamUrl": "https://x.com/amasad/status/2114769129282601053",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "OpenAI 宣布其内部模型在三项基础科学上取得突破：AI 写出了证明，人类还要弄懂什么？",
+        "xiaohuUrl": "https://xiaohu.ai/article/openai-academic-scientific-understanding/",
+        "status": "published",
+        "paid": false,
+        "slug": "openai-academic-scientific-understanding",
+        "upstreamUrl": "https://openai.com/index/building-scientific-understanding-with-academic-communities/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "OpenAI 发布 GPT-6.1 Terra：擅长看屏幕、操作软件，API 单价砍半",
+        "xiaohuUrl": "https://xiaohu.ai/article/openai-gpt-6-1-terra/",
+        "status": "published",
+        "paid": false,
+        "slug": "openai-gpt-6-1-terra",
+        "upstreamUrl": "https://x.com/OpenAI/status/2114780711664398349",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mvpg06cl-g32b",
+    "trigger": "cron",
+    "startedAt": "2026-10-26T15:59:59.013Z",
+    "finishedAt": "2026-10-26T16:14:02.512Z",
+    "durationMs": 843499,
+    "discovered": 6,
+    "published": 6,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Manus 联合创始人张涛复盘如何在公司内部进行 AI 改造：用 Manus 改造 Manus，AI Native 组织改造的实践和思考",
+        "xiaohuUrl": "https://xiaohu.ai/article/manus-ai-native-org/",
+        "status": "published",
+        "paid": false,
+        "slug": "manus-ai-native-org",
+        "upstreamUrl": "https://mp.weixin.qq.com/s/I_hNNAf7LFBf5nJ0rEJHig",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Grok Bot 额度为什么烧得这么快：大部分 token 花在重读旧对话上，11 步省用量清单",
+        "xiaohuUrl": "https://xiaohu.ai/article/grok-bot-usage-rereading/",
+        "status": "published",
+        "paid": false,
+        "slug": "grok-bot-usage-rereading",
+        "upstreamUrl": "https://x.com/GrokBotRadar/status/2114409935345971231",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "传统 RAG 与 Agentic RAG 的本质区别： 从“碰运气式被动回答”升级为“闭环自我纠错与多源探索”",
+        "xiaohuUrl": "https://xiaohu.ai/article/bytebytego-ep230-rag-agentic-rag/",
+        "status": "published",
+        "paid": false,
+        "slug": "bytebytego-ep230-rag-agentic-rag",
+        "upstreamUrl": "https://blog.bytebytego.com/p/ep230-rag-vs-agentic-rag",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "让 Claude Code、Codex 接上已登录的 Chrome：六种方案怎么选",
+        "xiaohuUrl": "https://xiaohu.ai/article/coding-agent-logged-in-chrome/",
+        "status": "published",
+        "paid": false,
+        "slug": "coding-agent-logged-in-chrome",
+        "upstreamUrl": "https://browser-use.com/posts/coding-agent-logged-in-chrome",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "怎样把自己放进 AI 视频：Higgsfield 三种方法，从照片到换脸",
+        "xiaohuUrl": "https://xiaohu.ai/article/higgsfield-yourself-ai-video/",
+        "status": "published",
+        "paid": false,
+        "slug": "higgsfield-yourself-ai-video",
+        "upstreamUrl": "https://higgsfield.ai/blog/how-to-put-yourself-in-ai-video",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "133 位专利律师实验：同样使用 AI，老手得到增强，新人面临认知卸载",
+        "xiaohuUrl": "https://xiaohu.ai/article/ai-patent-attorneys-expertise/",
+        "status": "published",
+        "paid": false,
+        "slug": "ai-patent-attorneys-expertise",
+        "upstreamUrl": "https://www.nber.org/papers/w35720",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mvo0kbog-21yf",
+    "trigger": "cron",
+    "startedAt": "2026-10-25T15:59:59.008Z",
+    "finishedAt": "2026-10-25T16:15:19.532Z",
+    "durationMs": 920524,
+    "discovered": 6,
+    "published": 6,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "如何用 AI 进行视频二次编辑与处理的使用指南：对局部画面、动作、光影和画质进行定向重塑",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/higgsfield-ai-video-editing/",
+        "status": "published",
+        "paid": false,
+        "slug": "higgsfield-ai-video-editing",
+        "upstreamUrl": "https://higgsfield.ai/blog/how-to-edit-videos-with-ai",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "谷歌前 CEO 埃里克·施密特：OpenAI 和 Anthropic 正在变成现代“东印度公司”",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/eric-schmidt-ai-colonial-trading-companies/",
+        "status": "published",
+        "paid": false,
+        "slug": "eric-schmidt-ai-colonial-trading-companies",
+        "upstreamUrl": "https://the-decoder.com/ex-google-ceo-eric-schmidt-calls-openai-and-anthropic-modern-colonial-trading-companies/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "那些“寄生”在短信和即时聊天工具里的 AI Agent",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/text-message-ai-agents/",
+        "status": "published",
+        "paid": false,
+        "slug": "text-message-ai-agents",
+        "upstreamUrl": "https://techcrunch.com/2026/10/24/all-the-ai-agents-that-can-live-in-your-text-messages/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "阿波罗研报：除科技巨头外，美国其他行业尚未见AI投资回报",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/apollo-ai-payoff-outside-tech/",
+        "status": "published",
+        "paid": false,
+        "slug": "apollo-ai-payoff-outside-tech",
+        "upstreamUrl": "https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "AI时代，美国创意行业迎来失业寒冬：20多万个工作岗位消失",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/ai-creative-class/",
+        "status": "published",
+        "paid": false,
+        "slug": "ai-creative-class",
+        "upstreamUrl": "https://www.apricitas.io/p/ai-and-the-fall-of-the-creative-class",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Claude 新增 MCP Tasks 与 Elicitations：插件能接下长任务，也能中途向你提问",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-mcp-tasks-elicitations/",
+        "status": "published",
+        "paid": false,
+        "slug": "claude-mcp-tasks-elicitations",
+        "upstreamUrl": "https://x.com/ClaudeDevs/status/2113698001889927608",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mvml4h09-kc88",
+    "trigger": "cron",
+    "startedAt": "2026-10-24T15:59:59.001Z",
+    "finishedAt": "2026-10-24T16:32:57.458Z",
+    "durationMs": 1978457,
+    "discovered": 14,
+    "published": 14,
+    "failed": 0,
+    "skipped": 1,
+    "items": [
+      {
+        "title": "10 个疯狂的 Grok Bot 用例：一群 Bot 一起干活 从整理收藏、盯竞品，到多 Agent 分工",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-bot-ten-use-cases/",
+        "status": "published",
+        "paid": false,
+        "slug": "grok-bot-ten-use-cases",
+        "upstreamUrl": "https://x.com/milesdeutscher/status/2113653680834859262",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "用 AI 和 Three.js 做一堂 3D 互动课：从能量课本到可运行原型",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/techartist-3d-energy-teaching-guide/",
+        "status": "published",
+        "paid": false,
+        "slug": "techartist-3d-energy-teaching-guide",
+        "upstreamUrl": "https://x.com/techartist_/status/2113310927093436587",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Anthropic 官方指南：随着模型能力的提升，很多子 Agent 其实可以换成技能和工具",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-fold-subagents/",
+        "status": "published",
+        "paid": false,
+        "slug": "claude-fold-subagents",
+        "upstreamUrl": "https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "a16z 本周图表：注意力难增长，旧 GPU 在涨租，AI 建设还卡在哪？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/a16z-attention-is-all/",
+        "status": "published",
+        "paid": false,
+        "slug": "a16z-attention-is-all",
+        "upstreamUrl": "https://www.a16z.news/p/charts-of-the-week-attention-is-all",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Block 发布了纯语音对话模型 Dessa：只靠听人类说话 从零学会了说话的 AI",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/dessa-speech-only-conversation/",
+        "status": "published",
+        "paid": false,
+        "slug": "dessa-speech-only-conversation",
+        "upstreamUrl": "https://block.xyz/dessa",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "AI 做设计总像套模板？huashu-design 3.0：让 AI 多看、多试，少把设计做成同一个样子",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/huashu-design-3/",
+        "status": "published",
+        "paid": false,
+        "slug": "huashu-design-3",
+        "upstreamUrl": "https://x.com/AlchainHust/status/2113650413170049529",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Kimi K3.1 Pro 发布：做完整游戏、可修改的 3D 模型和联动财务报表",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/kimi-k3-1-pro/",
+        "status": "published",
+        "paid": false,
+        "slug": "kimi-k3-1-pro",
+        "upstreamUrl": "https://x.com/Kimi_Moonshot/status/2113680701770068067",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "把人物故事拼成一张会动的脸：拆解 Mosaic Studio 的设计方法",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/mosaic-studio-generative-motion/",
+        "status": "published",
+        "paid": false,
+        "slug": "mosaic-studio-generative-motion",
+        "upstreamUrl": "https://x.com/agusegui/status/2113349291360325741",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Phonon-2.5：156 MB 的语音转录模型，支持25 种语言 平均成绩超过 Whisper large-v3",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/phonon-2-5/",
+        "status": "published",
+        "paid": false,
+        "slug": "phonon-2-5",
+        "upstreamUrl": "https://x.com/yoitsmanan/status/2113667722961965515",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "NVIDIA 发布 Bolt E4B：给本地助手和机器人用的小模型，少说废话，更会调用工具",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/nvidia-nemotron-3-5-bolt-e4b/",
+        "status": "published",
+        "paid": false,
+        "slug": "nvidia-nemotron-3-5-bolt-e4b",
+        "upstreamUrl": "https://research.nvidia.com/labs/nemotron/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "MIT 报告：地球上最著名的理工学院刚刚承认，AI 打破了他们的教学模式",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/mit-ai-education-cognitive-surrender-20261024/",
+        "status": "published",
+        "paid": false,
+        "slug": "mit-ai-education-cognitive-surrender-20261024",
+        "upstreamUrl": "https://aiandeducation.mit.edu/report/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Google 发布 Gemini API CLI：让现有 Agent 直接生图、做视频、配音和研究",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-api-cli/",
+        "status": "published",
+        "paid": false,
+        "slug": "gemini-api-cli",
+        "upstreamUrl": "https://x.com/LyalinDotCom/status/2113287431382601765",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "亚马逊 CEO：只给老产品加上 AI，可能守不住未来",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/andy-jassy-ai-organization-reinvention/",
+        "status": "published",
+        "paid": false,
+        "slug": "andy-jassy-ai-organization-reinvention",
+        "upstreamUrl": "https://x.com/a16z/status/2113687019239133682",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "让 Claude 帮你做新闻与纪实短片：8 种风格 从一支短片到自己的栏目",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/lemo-opuscar-edit-documentary/",
+        "status": "published",
+        "paid": false,
+        "slug": "lemo-opuscar-edit-documentary",
+        "upstreamUrl": "https://x.com/lemomo_ai/status/2113195080517562646",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "OpenAI 揭秘 ChatGPT 广告系统原理：如何能精准插入广告，又不改变回答效果",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/chatgpt-ad-stack/",
+        "status": "skipped"
+      }
+    ]
+  },
+  {
+    "id": "run-mvl5omco-d1yo",
+    "trigger": "cron",
+    "startedAt": "2026-10-23T15:59:59.016Z",
+    "finishedAt": "2026-10-23T16:00:02.066Z",
+    "durationMs": 3050,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
+    "id": "run-mvjq8ro9-1933",
+    "trigger": "cron",
+    "startedAt": "2026-10-22T15:59:59.001Z",
+    "finishedAt": "2026-10-22T16:06:57.205Z",
+    "durationMs": 418204,
+    "discovered": 3,
+    "published": 3,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "OpenAI 揭秘 ChatGPT 广告系统原理：如何能精准插入广告，又不改变回答效果",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/chatgpt-ad-stack/",
+        "status": "published",
+        "paid": false,
+        "slug": "chatgpt-ad-stack",
+        "upstreamUrl": "https://openai.com/index/building-chatgpt-ad-stack/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "AI 找出 PHP 严重漏洞：多国网站紧急下线，OpenAI 如何协调修复？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/php2shell/",
+        "status": "published",
+        "paid": false,
+        "slug": "php2shell",
+        "upstreamUrl": "https://openai.com/zh-Hans-CN/index/coordinated-disclosure-of-critical-vulnerabilities/",
+        "sourceName": "",
+        "resolution": "xiaohu",
+        "fetchMethod": "xiaohu"
+      },
+      {
+        "title": "Anthropic 推出自己的个人Agent： Claude Duet 能主动跟进工作，电脑合上也能继续干活",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-duet/",
+        "status": "published",
+        "paid": false,
+        "slug": "claude-duet",
+        "upstreamUrl": "https://claude.com/resources/articles/claude-duet",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mviasx0g-fbku",
+    "trigger": "cron",
+    "startedAt": "2026-10-21T15:59:59.008Z",
+    "finishedAt": "2026-10-21T16:21:26.222Z",
+    "durationMs": 1287214,
+    "discovered": 7,
+    "published": 7,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "一套验收流程：AI 写完代码后，自己开浏览器实操、验证页面效果、交出证据",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/coding-agent-browser-verification/",
+        "status": "published",
+        "paid": false,
+        "slug": "coding-agent-browser-verification",
+        "upstreamUrl": "https://www.freecodecamp.org/news/how-to-make-your-coding-agent-check-its-work-in-the-browser/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "如何用决策模型给 AI 做自动化质检：六款模型实测",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/hamel-decision-model-evals/",
+        "status": "published",
+        "paid": false,
+        "slug": "hamel-decision-model-evals",
+        "upstreamUrl": "https://hamel.dev/blog/posts/decision-model-evals/",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Perplexity Computer 支持 Mac 全本地运行：模型和 Agent 都留在电脑上，本地任务不扣积分",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/perplexity-computer-local-mac/",
+        "status": "published",
+        "paid": false,
+        "slug": "perplexity-computer-local-mac",
+        "upstreamUrl": "https://x.com/perplexity_ai/status/2112571597798461920",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "26 个 AI 语音模型实测：开口最快、读得最准、声音最自然，为什么不是同一个？",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/cekura-tts-benchmark-2026/",
+        "status": "published",
+        "paid": false,
+        "slug": "cekura-tts-benchmark-2026",
+        "upstreamUrl": "https://x.com/tarush_agarwal_/status/2112563925426511913",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "ElevenLabs 发布 Eleven Realtime 语音模型：Max 0.57 秒开口，语音推理准确率 98.8%",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/eleven-realtime/",
+        "status": "published",
+        "paid": false,
+        "slug": "eleven-realtime",
+        "upstreamUrl": "https://x.com/ElevenLabs/status/2112550782063247521",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "让显卡少做无用功 DeepSeek 开源了其背后的核心推理引擎",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/deepseek-deepinfer/",
+        "status": "published",
+        "paid": false,
+        "slug": "deepseek-deepinfer",
+        "upstreamUrl": "https://x.com/deepseek_ai/status/2112476496283775135",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      },
+      {
+        "title": "Vercel Labs 开源 fx0：超快的 HTML 工件构建器",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/vercel-fx0-design-agent/",
+        "status": "published",
+        "paid": false,
+        "slug": "vercel-fx0-design-agent",
+        "upstreamUrl": "https://github.com/vercel-labs/fx0",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "upstream-http"
+      }
+    ]
+  },
+  {
+    "id": "run-mvgvd2es-el3h",
+    "trigger": "cron",
+    "startedAt": "2026-10-20T15:59:59.092Z",
+    "finishedAt": "2026-10-20T16:01:22.344Z",
+    "durationMs": 83252,
+    "discovered": 1,
+    "published": 1,
+    "failed": 0,
+    "skipped": 0,
+    "items": [
+      {
+        "title": "Gemini 4 Argon 官方开发者指南：长任务怎么交给 AI，结果怎么验收",
+        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-4-argon-developer-guide/",
+        "status": "published",
+        "paid": false,
+        "slug": "gemini-4-argon-developer-guide",
+        "upstreamUrl": "https://aistudio.google.com/learn/gemini-4-argon-developer-guide",
+        "sourceName": "",
+        "resolution": "read-original",
+        "fetchMethod": "proxy"
+      }
+    ]
+  },
+  {
+    "id": "run-mvffx7oa-m420",
+    "trigger": "cron",
+    "startedAt": "2026-10-19T15:59:59.002Z",
+    "finishedAt": "2026-10-19T16:00:00.796Z",
+    "durationMs": 1794,
+    "discovered": 0,
+    "published": 0,
+    "failed": 0,
+    "skipped": 0,
+    "items": []
+  },
+  {
     "id": "run-mve0hd0h-eo4x",
     "trigger": "cron",
     "startedAt": "2026-10-18T15:59:59.009Z",
@@ -1851,125 +2820,6 @@
         "slug": "googlebook-built-in-intelligence-2",
         "upstreamUrl": "https://blog.google/products-and-platforms/devices/googlebook/googlebook-built-in-intelligence/",
         "sourceName": "Alexander Kuscher · Google"
-      }
-    ]
-  },
-  {
-    "id": "run-mugfdf02",
-    "trigger": "catchup",
-    "startedAt": "2026-09-25T03:52:39.218Z",
-    "finishedAt": "2026-09-25T04:00:10.942Z",
-    "durationMs": 451724,
-    "discovered": 17,
-    "published": 2,
-    "failed": 15,
-    "skipped": 0,
-    "items": [
-      {
-        "title": "Claude Opus 5.5 写代码画出一支手绘 MV：拆解做法，教你用开源模板自己做",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-clawd-animation-mv/",
-        "status": "published",
-        "slug": "opus-5-5-clawd-animation-mv",
-        "upstreamUrl": "https://github.com/JohnHeibel/PDoomVideo",
-        "sourceName": "NotinReality（GitHub：JohnHeibel）"
-      },
-      {
-        "title": "ACTx486：把一期现成播客，变成能插话、能改剧情的视频",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/actx486-talk-to-any-video/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "Google 发布 Gemini 3.8 Flash TTS语音模型 让你像导演一样逐行指导配音",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/gemini-3-8-flash-tts/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "Opus 5.5 官方提示词指南：effort 怎么设、Agent 为何中途停、哪些提示词该删",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/prompting-claude-opus-5-5/",
-        "status": "published",
-        "slug": "prompting-claude-opus-5-5",
-        "upstreamUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5",
-        "sourceName": "Anthropic"
-      },
-      {
-        "title": "Opus 5.5 降价后，Claude Code 完成一项任务到底花多少钱？实操省钱与提效指南",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-task-cost/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "a16z 办了一所学校：打破传统高等教育模式，专为 AI 时代培养顶尖的“年轻创造者/实干家”",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/horowitz-andreessen-academy/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "Claude Opus 5.5 使用指南：从交代任务到验收结果",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/opus-5-5-guide/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "SpaceXAI官方案例：工单增加175%，团队不增员：Grok Bot 如何接手客服全流程",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-bot-customer-support/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "Claude Opus 5.5 发布：编程、视觉与写作大幅升级，多项基准超越 Fable 5.1，价格却大幅降低｜看这些实战案例",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/claude-opus-5-5/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "OpenAI 发布 GPT-6 Sol 与 Luna：能力大幅提升 价格砍半",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/gpt-6-sol-and-luna/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): HTTP 403"
-      },
-      {
-        "title": "X 推出 X Numbers：给 X 用户一个“手机号”，直接私信、通话交流",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/x-chat-x-numbers/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "Cloudflare 发布 Worker Previews：让 AI 写的每次改动，都可以直接跑在云端进行验证",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/cloudflare-worker-previews/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): Maximum call stack size exceeded"
-      },
-      {
-        "title": "SpaceXAI 发布 Grok 4.7 模型竞争开始转向“长时任务”",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/grok-4-7/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "案例：给企业 AI Agents 装上“长期记忆”和“企业上下文”：V7 如何用 Context Graph 跑通复杂商业工作流",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/v7-context-graph-institutional-memory/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): HTTP 403"
-      },
-      {
-        "title": "小米发布 MiMo-V2.6 开源模型 能做什么：性能逼近 Opus 5",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/xiaomi-mimo-v2-6/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "AI 原生服务大爆发： 外部买结果，内部跑系统 让客户买单来帮你打磨产品",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/ai-native-services-100b-opportunity/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): fetch failed"
-      },
-      {
-        "title": "阿里巴巴发布 Qwen3.8-LiveTranslate实时语音翻译模型：实时同传，而且能区分多位说话人",
-        "xiaohuUrl": "https://best.xiaohu.ai/article/qwen3-8-livetranslate/",
-        "status": "failed",
-        "error": "上游原文抓取失败(已重试3次): 正文提取结果为空"
       }
     ]
   }
