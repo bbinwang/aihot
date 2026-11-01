@@ -147,6 +147,41 @@ export function deleteArticle(slug: string): boolean {
   return true
 }
 
+/**
+ * 更新文章元数据(标题/标签),正文不动、slug 不变,返回更新后的元数据。
+ * 只替换文件头 frontmatter 块,其后正文按原样字节级保留,避免重序列化漂移。
+ * tags 为全量替换(前端负责增删后的完整列表);上限 8 个、去重,与 createArticle 一致。
+ */
+export function updateArticleMeta(slug: string, patch: { title?: string; tags?: string[] }): ArticleMeta | null {
+  if (!safeSlug(slug)) return null
+  const full = path.join(articlesDir(), `${slug}.md`)
+  if (!fs.existsSync(full)) return null
+  const raw = fs.readFileSync(full, 'utf-8')
+  const { data } = parseMarkdown(raw)
+  if (!data.title) return null
+
+  const title = patch.title !== undefined ? patch.title.trim() : String(data.title).trim()
+  if (!title) throw new Error('标题不能为空')
+  const tags = patch.tags !== undefined
+    ? Array.from(new Set(patch.tags.map(t => t.trim()).filter(Boolean))).slice(0, 8)
+    : Array.isArray(data.tags) ? data.tags.filter(t => typeof t === 'string' && t.trim()).map(t => t.trim()) : []
+
+  // 重新序列化 frontmatter:保留原有键及顺序,title/tags 用新值
+  const lines: string[] = ['---']
+  for (const [k, v] of Object.entries(data)) {
+    if (k === 'title') lines.push(`title: ${JSON.stringify(title)}`)
+    else if (k === 'tags') lines.push(`tags: [${tags.map(t => JSON.stringify(t)).join(', ')}]`)
+    else if (v instanceof Date) lines.push(`${k}: ${v.toISOString()}`)
+    else if (typeof v === 'number' || typeof v === 'boolean' || v === null) lines.push(`${k}: ${v}`)
+    else lines.push(`${k}: ${JSON.stringify(String(v))}`)
+  }
+  if (!('title' in data)) lines.splice(1, 0, `title: ${JSON.stringify(title)}`)
+  lines.push('---')
+  const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
+  fs.writeFileSync(full, `${lines.join('\n')}\n${body}`, 'utf-8')
+  return readMeta(articlesDir(), `${slug}.md`)
+}
+
 /** 全文搜索:标题/标签/摘要/正文加权打分,返回前 20 条 */
 export function searchArticles(q: string): Array<ArticleMeta & { score: number }> {
   const needle = q.trim().toLowerCase()
@@ -174,6 +209,33 @@ export function listTags(): Array<{ tag: string; count: number }> {
     for (const t of a.tags) map.set(t, (map.get(t) || 0) + 1)
   }
   return [...map.entries()].map(([tag, count]) => ({ tag, count })).sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+}
+
+/**
+ * 按上游「原文链接」查找已发布文章(读文件头引用块),用于手动爬取去重。
+ * 同一 URL 重复发布会因 slug 冲突生成 -2 重复文章,应在提交时拦截。
+ * 未找到返回 null。
+ */
+export function findArticleByUpstreamUrl(url: string): { slug: string; title: string } | null {
+  const norm = (u: string) => u.trim().replace(/\/+$/, '').toLowerCase()
+  const target = norm(url)
+  if (!/^https?:\/\//.test(target)) return null
+  const dir = articlesDir()
+  if (!fs.existsSync(dir)) return null
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.toLowerCase().endsWith('.md')) continue
+    try {
+      const head = fs.readFileSync(path.join(dir, file), 'utf-8').slice(0, 4096)
+      const m = head.match(/\*\*原文链接\*\*:\s*\[([^\]]+)\]/)
+      if (m && norm(m[1]) === target) {
+        const t = head.match(/^title:\s*"(.*)"\s*$/m)
+        return { slug: file.replace(/\.md$/i, ''), title: t ? t[1] : '' }
+      }
+    } catch {
+      // 单篇读取失败跳过,不影响整体查重
+    }
+  }
+  return null
 }
 
 function xmlEscape(s: string): string {

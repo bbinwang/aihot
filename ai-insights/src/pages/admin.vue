@@ -132,6 +132,58 @@ async function remove(slug: string) {
   await loadList()
 }
 
+/* ---------- 文章行内编辑:标题 + 标签增删 ---------- */
+const editingSlug = ref('')
+const editTitle = ref('')
+const editTags = ref<string[]>([])
+const editTagInput = ref('')
+const savingMeta = ref(false)
+
+function startEdit(a: ArticleMeta) {
+  editingSlug.value = a.slug
+  editTitle.value = a.title
+  editTags.value = [...a.tags]
+  editTagInput.value = ''
+}
+
+function cancelEdit() {
+  editingSlug.value = ''
+}
+
+function removeEditTag(i: number) {
+  editTags.value.splice(i, 1)
+}
+
+function addEditTag() {
+  const t = editTagInput.value.trim()
+  if (!t) return
+  if (!editTags.value.includes(t)) {
+    if (editTags.value.length >= 8) { alert('标签最多 8 个'); return }
+    editTags.value.push(t)
+  }
+  editTagInput.value = ''
+}
+
+async function saveEdit() {
+  const slug = editingSlug.value
+  if (!slug) return
+  if (!editTitle.value.trim()) { alert('标题不能为空'); return }
+  savingMeta.value = true
+  try {
+    await $fetch(`/api/admin/articles/${slug}`, {
+      method: 'PATCH',
+      headers: { 'x-admin-password': password.value },
+      body: { title: editTitle.value, tags: editTags.value },
+    })
+    editingSlug.value = ''
+    await loadList()
+  } catch (e: any) {
+    alert(e?.data?.statusMessage || e?.message || '保存失败')
+  } finally {
+    savingMeta.value = false
+  }
+}
+
 /* ---------- 聚合任务(P2) ---------- */
 interface RunItem {
   title: string
@@ -281,20 +333,52 @@ async function crawl(url?: string, title?: string) {
   if (!target) return
   crawling.value = true
   crawlResult.value = null
+  const headers = { 'x-admin-password': password.value }
   try {
-    const res = await $fetch<{ ok: boolean; slug: string; url: string; translated: boolean }>('/api/admin/crawl', {
+    // 抓取+翻译耗时数分钟,同步等待会被移动网络约 60s 空闲超时掐断(Failed to fetch),
+    // 改为提交后立即返回 taskId,轮询 /api/admin/crawl/status 获取进度
+    const submit = await $fetch<{ ok: boolean; taskId: string }>('/api/admin/crawl', {
       method: 'POST',
-      headers: { 'x-admin-password': password.value },
+      headers,
       body: {
         url: target,
         title: title || crawlTitle.value || undefined,
         tags: crawlTags.value || undefined,
       },
     })
-    crawlResult.value = {
-      ok: true,
-      msg: `发布成功:${res.slug}${res.translated ? '(已翻译)' : '(原文即中文)'}`,
-      url: res.url,
+    const startedAt = Date.now()
+    let pollFails = 0
+    for (;;) {
+      await new Promise(r => setTimeout(r, 2500))
+      if (Date.now() - startedAt > 15 * 60 * 1000) {
+        throw new Error('等待超时(15 分钟),任务仍在服务端执行,稍后刷新文章列表查看结果')
+      }
+      let st: any
+      try {
+        st = await $fetch<any>('/api/admin/crawl/status', { headers, query: { taskId: submit.taskId } })
+        pollFails = 0
+      } catch (e: any) {
+        if (e?.status === 404 || e?.statusCode === 404 || e?.data?.statusCode === 404) {
+          throw new Error('任务记录不存在(服务可能已重启),请到文章列表确认是否已发布')
+        }
+        // 轮询瞬时网络抖动不放弃任务:容忍连续 5 次(约 12s)失败
+        if (++pollFails >= 5) throw new Error('查询进度连续失败,任务仍在服务端执行,稍后刷新文章列表查看结果')
+        continue
+      }
+      if (st.status === 'running') {
+        const secs = Math.round((Date.now() - startedAt) / 1000)
+        crawlResult.value = { ok: true, msg: `后台执行中… 已等待 ${secs}s(抓取+翻译约需数分钟,可保持页面打开)` }
+        continue
+      }
+      if (st.status === 'done') {
+        crawlResult.value = {
+          ok: true,
+          msg: `发布成功:${st.slug}${st.translated ? '(已翻译)' : '(原文即中文)'}`,
+          url: st.articleUrl,
+        }
+        break
+      }
+      throw new Error(st.error || '爬取失败')
     }
     if (!url) crawlUrl.value = crawlTitle.value = crawlTags.value = ''
     await loadList()
@@ -428,10 +512,36 @@ const failedItems = computed<RunItem[]>(() => {
             </thead>
             <tbody>
               <tr v-for="a in articles" :key="a.slug">
-                <td><NuxtLink class="link" :to="`/articles/${a.slug}`" target="_blank">{{ a.title }}</NuxtLink></td>
-                <td>{{ formatDate(a.date) }}</td>
-                <td>{{ a.tags.map(t => `#${t}`).join(' ') }}</td>
-                <td><button class="delete-btn" @click="remove(a.slug)">删除</button></td>
+                <template v-if="editingSlug === a.slug">
+                  <td><input v-model="editTitle" type="text" class="edit-title-input" placeholder="文章标题" @keydown.enter.prevent="saveEdit" /></td>
+                  <td>{{ formatDate(a.date) }}</td>
+                  <td>
+                    <div class="tag-editor">
+                      <span v-for="(t, i) in editTags" :key="t" class="tag-chip">
+                        #{{ t }}
+                        <button class="chip-x" title="删除该标签" @click="removeEditTag(i)">×</button>
+                      </span>
+                      <input
+                        v-model="editTagInput" type="text" class="tag-add-input"
+                        placeholder="+ 标签" :disabled="editTags.length >= 8"
+                        @keydown.enter.prevent="addEditTag"
+                      />
+                    </div>
+                  </td>
+                  <td class="row-actions">
+                    <button class="btn btn-plain" :disabled="savingMeta" @click="saveEdit">{{ savingMeta ? '保存中…' : '保存' }}</button>
+                    <button class="btn btn-plain" :disabled="savingMeta" @click="cancelEdit">取消</button>
+                  </td>
+                </template>
+                <template v-else>
+                  <td><NuxtLink class="link" :to="`/articles/${a.slug}`" target="_blank">{{ a.title }}</NuxtLink></td>
+                  <td>{{ formatDate(a.date) }}</td>
+                  <td>{{ a.tags.map(t => `#${t}`).join(' ') }}</td>
+                  <td class="row-actions">
+                    <button class="btn btn-plain" @click="startEdit(a)">编辑</button>
+                    <button class="delete-btn" @click="remove(a.slug)">删除</button>
+                  </td>
+                </template>
               </tr>
               <tr v-if="!articles.length"><td colspan="4" class="empty-tip" style="padding: 24px 0">暂无文章</td></tr>
             </tbody>
