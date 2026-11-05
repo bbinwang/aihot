@@ -18,6 +18,7 @@ function goSearch() {
 
       <nav class="nav">
         <NuxtLink to="/" class="nav-link" :class="{ active: route.path === '/' }">首页</NuxtLink>
+        <NuxtLink to="/links" class="nav-link" :class="{ active: route.path.startsWith('/links') }">热链</NuxtLink>
         <NuxtLink to="/tags" class="nav-link" :class="{ active: route.path.startsWith('/tags') }">标签</NuxtLink>
         <NuxtLink to="/about" class="nav-link" :class="{ active: route.path === '/about' }">关于</NuxtLink>
         <NuxtLink to="/admin" class="nav-link admin-link">管理</NuxtLink>

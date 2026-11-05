@@ -10,6 +10,7 @@ useHead({ title: '关于 · AIHot' })
       <ul>
         <li>文章以 Markdown 存储,支持在 <a href="/admin">管理控制台</a> 直接上传</li>
         <li>支持标签分类、全文搜索、RSS 订阅与暗色模式</li>
+        <li><a href="/links">热链</a>:精选热门资源与资讯站点的外链导航</li>
       </ul>
       <p>技术栈:Nuxt 3 + Nitro + marked + gray-matter。</p>
     </div>
