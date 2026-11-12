@@ -77,6 +77,31 @@ export const resourceSites: ResourceSite[] = [
         url: 'https://mianji.qiaomu.ai',
         description: '投资理财与个人成长话题',
       },
+      {
+        name: 'Lex Fridman 播客全访谈',
+        url: 'https://lex.qiaomu.ai',
+        description: '506 期全收录,音频视频文稿加中文精读',
+      },
+    ],
+  },
+  {
+    id: 'qiaomu-airss',
+    name: '乔木 AI 资讯 · AI RSS 阅读器',
+    tagline: 'airss.qiaomu.ai',
+    description:
+      '向阳乔木出品的 AI RSS 阅读器,聚合博客、播客与 Newsletter,提供中文翻译与 AI 改写,支持 Obsidian 插件摘录到笔记,也有网页版即刻阅读。',
+    homepage: 'https://airss.qiaomu.ai',
+    links: [
+      {
+        name: '乔木 AI 资讯',
+        url: 'https://airss.qiaomu.ai',
+        description: '产品主页:插件下载与安装指南',
+      },
+      {
+        name: '网页版阅读器',
+        url: 'https://rss.qiaomu.ai',
+        description: '免安装,浏览器里直接读乔木精选与中文译文',
+      },
     ],
   },
 ]

@@ -15,6 +15,8 @@ export interface CrawlTask {
   finishedAt?: number
   slug?: string
   translated?: boolean
+  /** 是否生成了「AI 总结」区(总结失败时 false,文章仍发布) */
+  summarized?: boolean
   error?: string
 }
 
@@ -46,6 +48,7 @@ export function startCrawlTask(url: string, opts: { title?: string; tags?: strin
       task.finishedAt = Date.now()
       task.slug = r.slug
       task.translated = r.translated
+      task.summarized = r.summarized
     })
     .catch((err) => {
       task.status = 'error'

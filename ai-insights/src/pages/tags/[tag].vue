@@ -8,7 +8,7 @@ const { data } = await useFetch<{ total: number; items: ArticleMeta[] }>('/api/a
   query: { tag, pageSize: 50 },
 })
 
-useHead({ title: () => `#${tag.value} · AIHot` })
+useHead({ title: () => `#${tag.value} · AIHot汪` })
 </script>
 
 <template>

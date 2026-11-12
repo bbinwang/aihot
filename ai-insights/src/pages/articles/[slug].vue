@@ -10,7 +10,7 @@ if (error.value || !article.value) {
   throw createError({ statusCode: 404, statusMessage: '文章不存在', fatal: true })
 }
 
-useHead({ title: () => `${article.value?.title ?? '文章'} · AIHot` })
+useHead({ title: () => `${article.value?.title ?? '文章'} · AIHot汪` })
 </script>
 
 <template>

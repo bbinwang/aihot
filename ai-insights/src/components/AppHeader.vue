@@ -2,26 +2,47 @@
 const route = useRoute()
 const q = ref(typeof route.query.q === 'string' ? route.query.q : '')
 
+const links = [
+  { to: '/', label: '首页', exact: true },
+  { to: '/models', label: '模型动态' },
+  { to: '/links', label: '热链' },
+  { to: '/tags', label: '标签' },
+  { to: '/about', label: '关于' },
+  { to: '/admin', label: '管理', admin: true },
+]
+
+function isActive(link: { to: string; exact?: boolean }) {
+  return link.exact ? route.path === link.to : route.path.startsWith(link.to)
+}
+
 function goSearch() {
   const keyword = q.value.trim()
   if (keyword) navigateTo({ path: '/search', query: { q: keyword } })
+}
+
+function summonDog() {
+  window.dispatchEvent(new CustomEvent('dog:summon'))
 }
 </script>
 
 <template>
   <header class="app-header">
     <div class="container header-inner">
-      <NuxtLink to="/" class="brand">
-        <span class="brand-mark">AI</span>
-        <span class="brand-text">Hot<span class="brand-dot">·</span>热点洞察</span>
-      </NuxtLink>
+      <div class="brand-zone">
+        <NuxtLink to="/" class="brand" aria-label="AIHot 首页">
+          <AihotLogo @wang="summonDog" />
+        </NuxtLink>
+        <DogPet />
+      </div>
 
       <nav class="nav">
-        <NuxtLink to="/" class="nav-link" :class="{ active: route.path === '/' }">首页</NuxtLink>
-        <NuxtLink to="/links" class="nav-link" :class="{ active: route.path.startsWith('/links') }">热链</NuxtLink>
-        <NuxtLink to="/tags" class="nav-link" :class="{ active: route.path.startsWith('/tags') }">标签</NuxtLink>
-        <NuxtLink to="/about" class="nav-link" :class="{ active: route.path === '/about' }">关于</NuxtLink>
-        <NuxtLink to="/admin" class="nav-link admin-link">管理</NuxtLink>
+        <NuxtLink
+          v-for="link in links"
+          :key="link.to"
+          :to="link.to"
+          class="nav-link"
+          :class="{ active: isActive(link), 'admin-link': link.admin }"
+        >{{ link.label }}</NuxtLink>
       </nav>
 
       <div class="header-right">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { resourceSites } from '~/data/resources'
 
-useHead({ title: '热链 · AIHot' })
+useHead({ title: '热链 · AIHot汪' })
 
 /** 取名字首个字符作头像字 */
 function initial(name: string) {

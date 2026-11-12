@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'zh-CN' },
-      title: 'AIHot · AI 热点洞察',
+      title: 'AIHot汪 · AI 热点洞察',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'AI 热点资讯与洞察:文章、标签、搜索、RSS' },
       ],
-      link: [{ rel: 'alternate', type: 'application/rss+xml', title: 'AIHot RSS', href: '/rss.xml' }],
+      link: [{ rel: 'alternate', type: 'application/rss+xml', title: 'AIHot汪 RSS', href: '/rss.xml' }],
     },
   },
   nitro: {

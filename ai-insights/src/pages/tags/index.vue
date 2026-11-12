@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { data: tags } = await useFetch<Array<{ tag: string; count: number }>>('/api/tags')
 
-useHead({ title: '标签 · AIHot' })
+useHead({ title: '标签 · AIHot汪' })
 </script>
 
 <template>

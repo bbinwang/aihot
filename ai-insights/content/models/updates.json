@@ -1,0 +1,18 @@
+[
+  {
+    "id": "mu-mwc6vaqg-xlu3",
+    "title": "小红书开源dots.tts.edit V1.1语音编辑模型",
+    "description": "dots.tts.edit V1.1支持局部修改文本、情绪、语速和停顿，并覆盖中英双语与多说话人编辑。",
+    "sourceUrl": "https://mp.weixin.qq.com/s/MUcPXCbsGDZtWkvM0oo82g",
+    "category": "语音模型",
+    "date": "2026-11-11T14:02:56.920Z"
+  },
+  {
+    "id": "mu-mwc6uk9w-5i9n",
+    "title": "蚂蚁开源4B多模态决策模型SingVL",
+    "description": "SingVL_S1_4B可结合文本、JSON及四张图片进行单次前向打分。模型基于Qwen3.5。",
+    "sourceUrl": "https://huggingface.co/inclusionAI/SingVL_S1_4B",
+    "category": "决策模型",
+    "date": "2026-11-11T14:02:22.628Z"
+  }
+]

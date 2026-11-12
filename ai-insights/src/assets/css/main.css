@@ -65,22 +65,33 @@ img { max-width: 100%; }
 .header-inner {
   display: flex;
   align-items: center;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
   height: 60px;
 }
 
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; }
-.brand-mark {
-  background: var(--accent);
-  color: #fff;
-  border-radius: 8px;
-  padding: 2px 8px;
-  font-size: 14px;
-  letter-spacing: 1px;
+/* ============ 品牌标志:aihot / WANG(参照设计稿 SVG,430×240 比例) ============ */
+/* 品牌+桌宠组合:桌宠紧靠 logo */
+.brand-zone { display: flex; align-items: center; gap: 4px; }
+.brand { display: inline-flex; align-items: center; text-decoration: none; color: var(--text); }
+.aihot-logo {
+  display: block;
+  height: 44px; /* 60px 头部内安放,不改变头部高度 */
+  width: auto;  /* 保持原 SVG 宽高比 */
 }
-.brand-dot { color: var(--accent); }
+.aihot-logo .logo-divider { stroke: var(--border); }
+/* O 圆环:召唤小狗的入口(替代原「汪」印章) */
+.aihot-logo .logo-o {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .18s ease;
+}
+.aihot-logo .logo-o:hover { transform: scale(1.08) rotate(8deg); }
+.aihot-logo .logo-o:active { transform: scale(0.94); }
 
-.nav { display: flex; gap: 4px; }
+/* 菜单:靠右 */
+.nav { display: flex; gap: 4px; margin-left: auto; }
 .nav-link {
   padding: 6px 12px;
   border-radius: 8px;
@@ -89,9 +100,9 @@ img { max-width: 100%; }
 }
 .nav-link:hover { background: var(--bg-hover); color: var(--text); }
 .nav-link.active { color: var(--accent); font-weight: 600; }
-.admin-link { border: 1px solid var(--border); margin-left: 4px; }
+.admin-link { border: 1px solid var(--border); }
 
-.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
 
 .search-box input {
   width: 180px;
@@ -326,6 +337,39 @@ img { max-width: 100%; }
 
 .links-more { text-align: center; color: var(--text-3); font-size: 13px; padding: 24px 0 0; }
 
+/* ============ 模型动态 ============ */
+.model-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 22px; }
+.model-chip {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-2);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.model-chip:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); color: var(--accent); }
+.model-chip.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.model-list { display: flex; flex-direction: column; gap: 12px; }
+.model-card {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s, border-color 0.15s;
+}
+.model-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.model-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.model-title { font-size: 16.5px; font-weight: 650; line-height: 1.5; }
+.model-card:hover .model-title { color: var(--accent); }
+.model-desc { color: var(--text-2); font-size: 13.5px; line-height: 1.6; margin: 8px 0 10px; }
+.model-card .card-meta { margin: 0; }
+
 /* ============ 管理控制台 ============ */
 .admin-page h1 { font-size: 24px; margin: 0 0 6px; }
 .admin-hint { color: var(--text-3); font-size: 13px; margin-bottom: 24px; }
@@ -426,7 +470,7 @@ img { max-width: 100%; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-2); }
 .form-field.full { grid-column: 1 / -1; }
-.form-field input, .form-field textarea {
+.form-field input, .form-field textarea, .form-field select {
   padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -436,7 +480,7 @@ img { max-width: 100%; }
   font-family: inherit;
   outline: none;
 }
-.form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--accent); }
 .form-field textarea { min-height: 120px; resize: vertical; }
 .form-field textarea.code { font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; }
 .form-actions { margin-top: 16px; display: flex; align-items: center; gap: 14px; }
@@ -593,13 +637,30 @@ img { max-width: 100%; }
 .footer-inner { display: flex; justify-content: space-between; align-items: center; }
 .rss-link { color: var(--accent); }
 .rss-link:hover { text-decoration: underline; }
+.brand-domain { color: inherit; font-weight: 600; }
+.brand-domain:hover { color: var(--accent); }
 
 /* ============ 响应式 ============ */
 @media (max-width: 720px) {
-  .header-inner { gap: 12px; }
-  .nav { display: none; }
-  .search-box input { width: 120px; }
-  .search-box input:focus { width: 160px; }
+  /* 头部两行:① 品牌 + 搜索 + 主题切换;② 一级菜单平铺 */
+  .header-inner { height: auto; padding: 10px 0 8px; row-gap: 6px; column-gap: 12px; }
+  .brand-zone { order: 1; }
+  .header-right { order: 2; margin-left: auto; }
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    gap: 0;
+  }
+  .nav-link {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    padding: 6px 4px;
+    border-radius: 8px;
+  }
+  .search-box input { width: 110px; }
+  .search-box input:focus { width: 110px; border-color: var(--accent); }
   .form-grid { grid-template-columns: 1fr; }
   .card-tags { margin-left: 0; }
   .card-meta { flex-wrap: wrap; }

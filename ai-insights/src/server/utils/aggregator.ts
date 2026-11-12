@@ -14,6 +14,8 @@ import { promisify } from 'node:util'
 import { createArticle } from './articles'
 import { extractMarkdown } from './html2md'
 import { translateMarkdown } from './translate'
+import { generateSummary, extractTags } from './summarize'
+import { plainText } from './markdown'
 import type { Fetcher } from './llm'
 
 const XIAOHU_RSS = () => process.env.XIAOHU_RSS || 'https://best.xiaohu.ai/rss.xml'
@@ -851,6 +853,8 @@ function composeBody(opts: {
   content: string
   /** 兜底策略说明(如「正文取自小互 AI 解读」),追加在说明行 */
   note?: string
+  /** AI 总结区(Markdown),插在元信息与原文之间 */
+  aiSummary?: string
 }): string {
   const lines = [
     `> **原文链接**: [${opts.upstreamUrl}](${opts.upstreamUrl})`,
@@ -858,8 +862,11 @@ function composeBody(opts: {
   ]
   if (opts.viaUrl) lines.push(`> **发现于**: [${opts.viaLabel}](${opts.viaUrl})${opts.pubDate ? ` · ${opts.pubDate}` : ''}`)
   else lines.push(`> **发现于**: ${opts.viaLabel}${opts.pubDate ? ` · ${opts.pubDate}` : ''}`)
-  lines.push(`> **说明**: 本文由 AIHot 自动聚合${opts.translated ? ',并由 GLM 翻译为中文(保留全部代码与链接)' : '(原文即中文,未翻译)'}${opts.note ? `。${opts.note}` : ''}`)
-  return `${lines.join('\n')}\n\n---\n\n${demoteHeadings(opts.content.trim())}`
+  lines.push(`> **说明**: 本文由 AIHot汪 自动聚合${opts.translated ? ',并由 GLM 翻译为中文(保留全部代码与链接)' : '(原文即中文,未翻译)'}${opts.note ? `。${opts.note}` : ''}`)
+  const summaryBlock = opts.aiSummary?.trim()
+    ? `## AI 总结\n\n${opts.aiSummary.trim()}\n\n---\n\n`
+    : ''
+  return `${lines.join('\n')}\n\n---\n\n${summaryBlock}${demoteHeadings(opts.content.trim())}`
 }
 
 async function publishFromUpstream(opts: {
@@ -875,8 +882,34 @@ async function publishFromUpstream(opts: {
   markdown: string
   note?: string
   fetcher?: Fetcher
-}): Promise<{ slug: string; translated: boolean }> {
+  /**
+   * 「AI 总结」区:true = 由 LLM 基于翻译正文生成;非空字符串 = 手动填写的 Markdown 总结
+   * (跳过 LLM 生成,标签仍由 LLM 基于该总结提炼)。生成失败降级为无总结区、仅用户标签。
+   */
+  aiSummary?: string | boolean
+}): Promise<{ slug: string; translated: boolean; summarized: boolean }> {
   const outcome = await translateMarkdown(opts.markdown, { fetcher: opts.fetcher })
+  let aiSummary = ''
+  if (typeof opts.aiSummary === 'string' && opts.aiSummary.trim()) {
+    // 手动填写的总结:原样作为总结区,不调生成模型
+    aiSummary = opts.aiSummary.trim()
+  } else if (opts.aiSummary === true) {
+    try {
+      aiSummary = (await generateSummary(outcome.text, { fetcher: opts.fetcher })).summary
+    } catch (err) {
+      console.warn(`[aggregator] AI 总结生成失败(降级发布,无总结区): ${err instanceof Error ? err.message : err}`)
+    }
+  }
+  // 标签提炼:总结区无论手动填写还是 LLM 生成,均由 LLM 基于总结区内容提炼
+  let aiTags: string[] = []
+  if (aiSummary) {
+    try {
+      aiTags = await extractTags(aiSummary, { fetcher: opts.fetcher })
+    } catch (err) {
+      console.warn(`[aggregator] 标签提炼失败(仅跳过 AI 标签): ${err instanceof Error ? err.message : err}`)
+    }
+  }
+  const tags = Array.from(new Set([...(opts.tags || []), ...aiTags])).slice(0, 8)
   const body = composeBody({
     upstreamUrl: opts.upstreamUrl,
     sourceName: opts.sourceName,
@@ -886,16 +919,20 @@ async function publishFromUpstream(opts: {
     translated: !outcome.skipped,
     content: outcome.text,
     note: opts.note,
+    aiSummary: aiSummary || undefined,
   })
   const meta = createArticle({
     title: opts.title,
     markdown: body,
-    tags: opts.tags,
-    summary: opts.summary || undefined,
+    tags,
+    // 列表页摘要优先取总结区(手动或 AI 生成)的纯文本;无总结区时回退调用方摘要
+    summary: aiSummary
+      ? plainText(aiSummary).replace(/\s+/g, ' ').trim().slice(0, 120)
+      : (opts.summary || undefined),
     date: opts.date,
     slug: opts.slug,
   })
-  return { slug: meta.slug, translated: !outcome.skipped }
+  return { slug: meta.slug, translated: !outcome.skipped, summarized: !!aiSummary }
 }
 
 // ---------------------------------------------------------------------------
@@ -942,8 +979,8 @@ async function processItem(
       resolution,
     })
 
-    // 会员文章优先挂「会员」标签(避免被 8 个上限截掉)
-    const tags = Array.from(new Set([...(item.paid ? ['会员'] : []), ...item.categories, '聚合'])).slice(0, 8)
+    // 会员文章优先挂「会员」标签(避免被 8 个上限截掉);不再追加「聚合」系统标签
+    const tags = Array.from(new Set([...(item.paid ? ['会员'] : []), ...item.categories])).slice(0, 8)
     const slugHint = item.link.match(/\/article\/([^/]+)\/?$/)?.[1]
     const { slug } = await publishFromUpstream({
       title,
@@ -1263,11 +1300,16 @@ export async function runScheduledAggregation(
   return { ran: true, slot: state.lastSlotAt, report }
 }
 
-/** 手动爬取:任意 URL → 抓原文 → 翻译 → 发布 */
+/**
+ * 手动爬取:任意 URL → 抓原文 → 翻译 →「AI 总结」区(手动填写的 Markdown 优先,
+ * 留空由 LLM 基于翻译正文生成)→ 标签提炼(基于总结区)→ 发布。
+ * 最终文章 = 标题 + 元信息 + 总结区 + 抓取原文;标签 = 用户输入优先,AI 基于总结区
+ * 提炼补足(合并去重,上限 8);AI 生成失败时降级为无总结区、仅用户标签。
+ */
 export async function crawlAndPublish(
   url: string,
   opts: { title?: string; tags?: string[]; summary?: string; fetcher?: Fetcher } = {},
-): Promise<{ slug: string; translated: boolean }> {
+): Promise<{ slug: string; translated: boolean; summarized: boolean }> {
   let parsed: URL
   try {
     parsed = new URL(url)
@@ -1280,16 +1322,20 @@ export async function crawlAndPublish(
   const title = (opts.title || '').trim() ||
     upstream.markdown.match(/^#\s+(.+)$/m)?.[1]?.trim() ||
     parsed.hostname
-  const tags = Array.from(new Set([...(opts.tags || []), '聚合'])).slice(0, 8)
+  // 标签 = 用户输入 + AI 基于总结区提炼;不再追加「聚合」系统标签
+  const tags = Array.from(new Set(opts.tags || []))
+  // 手动填写的 AI 总结(Markdown):非空则跳过 LLM 生成;长度兜底防超长输入
+  const manualSummary = (opts.summary || '').trim().slice(0, 5000)
 
   return publishFromUpstream({
     title: title.slice(0, 100),
     tags,
-    summary: (opts.summary || '').slice(0, 120),
+    summary: '',
     upstreamUrl: url,
     sourceName: parsed.hostname,
     viaLabel: '管理台手动提交',
     markdown: upstream.markdown,
     fetcher: opts.fetcher,
+    aiSummary: manualSummary || true,
   })
 }

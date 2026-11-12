@@ -34,10 +34,10 @@ describe('热链资源数据', () => {
     }
   })
 
-  it('本期收录向阳乔木播客精读站的 8 个播客', () => {
+  it('收录向阳乔木播客精读站(不少于 8 个播客)', () => {
     const qiaomu = resourceSites.find(s => s.id === 'qiaomu-podcast')
     expect(qiaomu).toBeDefined()
-    expect(qiaomu!.links.length).toBe(8)
+    expect(qiaomu!.links.length).toBeGreaterThanOrEqual(8)
     expect(qiaomu!.links.every(l => l.url.endsWith('.qiaomu.ai'))).toBe(true)
   })
 })

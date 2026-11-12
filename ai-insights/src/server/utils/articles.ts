@@ -243,7 +243,7 @@ function xmlEscape(s: string): string {
 }
 
 /** 生成 RSS 2.0 XML */
-export function toRss(items: ArticleMeta[], siteUrl: string, title = 'AIHot · AI 热点洞察'): string {
+export function toRss(items: ArticleMeta[], siteUrl: string, title = 'AIHot汪 · AI 热点洞察'): string {
   const base = siteUrl.replace(/\/$/, '')
   const channel = [
     `    <title>${xmlEscape(title)}</title>`,

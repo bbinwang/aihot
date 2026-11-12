@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { ArticleMeta } from '~~/server/utils/articles'
+import type { ModelUpdate } from '~~/server/utils/modelUpdates'
+import { MODEL_CATEGORIES } from '~/data/modelCategories'
 import { formatDate } from '~/utils/format'
 
-useHead({ title: '管理控制台 · AIHot' })
+useHead({ title: '管理控制台 · AIHot汪' })
 
 /* ---------- 登录 ---------- */
 const password = ref('')
@@ -121,7 +123,7 @@ function goPage(p: number) {
   loadList()
 }
 
-watch(authed, (v) => { if (v) { loadList(); loadAgg() } }, { immediate: true })
+watch(authed, (v) => { if (v) { loadList(); loadAgg(); loadModels() } }, { immediate: true })
 
 async function remove(slug: string) {
   if (!confirm(`确认删除文章「${slug}」?不可恢复。`)) return
@@ -243,6 +245,7 @@ const expandedRun = ref<string | null>(null)
 const crawlUrl = ref('')
 const crawlTitle = ref('')
 const crawlTags = ref('')
+const crawlSummary = ref('')
 const crawling = ref(false)
 const crawlResult = ref<{ ok: boolean; msg: string; url?: string } | null>(null)
 
@@ -344,6 +347,7 @@ async function crawl(url?: string, title?: string) {
         url: target,
         title: title || crawlTitle.value || undefined,
         tags: crawlTags.value || undefined,
+        summary: crawlSummary.value.trim() || undefined,
       },
     })
     const startedAt = Date.now()
@@ -367,20 +371,20 @@ async function crawl(url?: string, title?: string) {
       }
       if (st.status === 'running') {
         const secs = Math.round((Date.now() - startedAt) / 1000)
-        crawlResult.value = { ok: true, msg: `后台执行中… 已等待 ${secs}s(抓取+翻译约需数分钟,可保持页面打开)` }
+        crawlResult.value = { ok: true, msg: `后台执行中… 已等待 ${secs}s(抓取+翻译+AI 总结约需数分钟,可保持页面打开)` }
         continue
       }
       if (st.status === 'done') {
         crawlResult.value = {
           ok: true,
-          msg: `发布成功:${st.slug}${st.translated ? '(已翻译)' : '(原文即中文)'}`,
+          msg: `发布成功:${st.slug}${st.translated ? '(已翻译)' : '(原文即中文)'}${st.summarized ? ' · 含 AI 总结与提炼标签' : ' · AI 总结生成失败(已降级发布)'}`,
           url: st.articleUrl,
         }
         break
       }
       throw new Error(st.error || '爬取失败')
     }
-    if (!url) crawlUrl.value = crawlTitle.value = crawlTags.value = ''
+    if (!url) crawlUrl.value = crawlTitle.value = crawlTags.value = crawlSummary.value = ''
     await loadList()
   } catch (e: any) {
     crawlResult.value = { ok: false, msg: e?.data?.statusMessage || e?.message || '爬取失败' }
@@ -392,6 +396,61 @@ async function crawl(url?: string, title?: string) {
 function fmtTime(iso?: string | null): string {
   if (!iso) return '—'
   return new Date(iso).toLocaleString('zh-CN', { hour12: false })
+}
+
+/* ---------- 模型动态管理(手动工具) ---------- */
+const modelCategories: readonly string[] = MODEL_CATEGORIES
+const muTitle = ref('')
+const muCategory = ref('')
+const muUrl = ref('')
+const muDesc = ref('')
+const muSubmitting = ref(false)
+const muResult = ref<{ ok: boolean; msg: string } | null>(null)
+const modelUpdates = ref<ModelUpdate[]>([])
+
+async function loadModels() {
+  try {
+    const res = await $fetch<{ items: ModelUpdate[] }>('/api/models')
+    modelUpdates.value = res.items
+  } catch { /* 列表加载失败不打断管理台 */ }
+}
+
+async function submitModelUpdate() {
+  muResult.value = null
+  muSubmitting.value = true
+  try {
+    await $fetch<{ ok: boolean; id: string }>('/api/admin/models', {
+      method: 'POST',
+      headers: { 'x-admin-password': password.value },
+      body: {
+        title: muTitle.value.trim(),
+        description: muDesc.value.trim() || undefined,
+        sourceUrl: muUrl.value.trim(),
+        category: muCategory.value,
+      },
+    })
+    muResult.value = { ok: true, msg: '✓ 已收录' }
+    muTitle.value = muUrl.value = muDesc.value = ''
+    muCategory.value = ''
+    await loadModels()
+  } catch (e: any) {
+    muResult.value = { ok: false, msg: e?.data?.statusMessage || e?.message || '收录失败' }
+  } finally {
+    muSubmitting.value = false
+  }
+}
+
+async function removeModelUpdate(id: string) {
+  if (!confirm('删除这条模型动态?')) return
+  try {
+    await $fetch(`/api/admin/models/${id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-password': password.value },
+    })
+    await loadModels()
+  } catch (e: any) {
+    alert(e?.data?.statusMessage || e?.message || '删除失败')
+  }
 }
 
 function fmtDuration(ms: number): string {
@@ -690,7 +749,7 @@ const failedItems = computed<RunItem[]>(() => {
         <!-- 手动爬取(P2) -->
         <section class="admin-section">
           <h2>🔗 手动爬取翻译</h2>
-          <p class="admin-hint">输入任意文章/仓库链接,自动抓取原文 → GLM 翻译为中文 → 发布(失败项可在「聚合任务」页「待人工处理」重爬)。</p>
+          <p class="admin-hint">输入任意文章/仓库链接,自动抓取原文 → GLM 翻译为中文 →「AI 总结」区(下方手动填写优先,留空由 AI 生成)→ AI 基于总结提炼标签 → 发布(文章 = AI 总结区 + 原文;失败项可在「聚合任务」页「待人工处理」重爬)。</p>
           <div class="form-grid">
             <div class="form-field full">
               链接 *
@@ -701,8 +760,16 @@ const failedItems = computed<RunItem[]>(() => {
               <input v-model="crawlTitle" type="text" placeholder="自动识别" />
             </div>
             <div class="form-field">
-              标签(逗号分隔,默认加 #聚合)
+              标签(逗号分隔,留空由 AI 基于总结提炼)
               <input v-model="crawlTags" type="text" placeholder="如:Gemini, 发布" />
+            </div>
+            <div class="form-field full">
+              AI 总结(Markdown 格式,留空由 AI 基于原文自动生成)
+              <textarea
+                v-model="crawlSummary"
+                class="code"
+                placeholder="支持 Markdown:&#10;- **要点一**:核心结论…&#10;- **要点二**:关键数据/产品名保留原文…&#10;&#10;填写后将跳过 AI 生成,直接作为文章的「AI 总结」区;标签仍由 AI 基于这段总结提炼"
+              />
             </div>
           </div>
           <div class="form-actions">
@@ -714,6 +781,55 @@ const failedItems = computed<RunItem[]>(() => {
             {{ crawlResult.msg }}
             <NuxtLink v-if="crawlResult.url" :to="crawlResult.url">→ 查看文章</NuxtLink>
           </p>
+        </section>
+
+        <!-- 模型动态管理 -->
+        <section class="admin-section">
+          <h2>🤖 模型动态管理 <NuxtLink to="/models" class="res-group-home">前台页面 ↗</NuxtLink></h2>
+          <p class="admin-hint">手动收录模型动态(展示在「模型动态」一级菜单页,按添加时间倒序);同信源链接重复收录会被拦截。</p>
+          <div class="form-grid">
+            <div class="form-field">
+              标题 *
+              <input v-model="muTitle" type="text" placeholder="如:GLM-5 正式发布" />
+            </div>
+            <div class="form-field">
+              模型分类 *(下拉选择)
+              <select v-model="muCategory">
+                <option value="" disabled>选择分类…</option>
+                <option v-for="c in modelCategories" :key="c" :value="c">{{ c }}</option>
+              </select>
+            </div>
+            <div class="form-field full">
+              信源链接 *
+              <input v-model="muUrl" type="url" placeholder="https://…" />
+            </div>
+            <div class="form-field full">
+              描述(可选)
+              <input v-model="muDesc" type="text" placeholder="一句话介绍这条模型动态" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn" :disabled="muSubmitting || !muTitle.trim() || !muUrl.trim() || !muCategory" @click="submitModelUpdate()">
+              {{ muSubmitting ? '收录中…' : '收录动态' }}
+            </button>
+          </div>
+          <p v-if="muResult" class="admin-result" :class="muResult.ok ? 'ok' : 'err'">{{ muResult.msg }}</p>
+
+          <table v-if="modelUpdates.length" class="admin-table">
+            <thead>
+              <tr><th>标题</th><th>分类</th><th>信源</th><th>添加时间</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="m in modelUpdates" :key="m.id">
+                <td>{{ m.title }}</td>
+                <td><span class="tag-badge">{{ m.category }}</span></td>
+                <td><a :href="m.sourceUrl" target="_blank" rel="noopener noreferrer">{{ m.sourceUrl.slice(0, 50) }}</a></td>
+                <td>{{ fmtTime(m.date) }}</td>
+                <td><button class="delete-btn" @click="removeModelUpdate(m.id)">删除</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else class="admin-hint">暂无收录</p>
         </section>
         </template>
       </div>

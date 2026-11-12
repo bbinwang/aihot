@@ -17,6 +17,7 @@ export default defineEventHandler((event) => {
     finishedAt: task.finishedAt,
     slug: task.slug,
     translated: task.translated,
+    summarized: task.summarized,
     articleUrl: task.status === 'done' && task.slug ? `/articles/${task.slug}` : undefined,
     error: task.error,
   }

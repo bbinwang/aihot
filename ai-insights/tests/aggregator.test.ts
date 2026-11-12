@@ -37,23 +37,39 @@ beforeAll(() => {
   process.env.CDP_FETCH = '0' // 测试中禁用真实 CDP(ego-browser),兜底用例一律注入 browserFetcher
 })
 
-type Route = { match: RegExp | string; status?: number; body: string }
+type Route = {
+  /** 字符串/正则匹配 URL;函数同时拿到请求体(按 system 提示词区分翻译/总结/标签调用) */
+  match: RegExp | string | ((url: string, reqBody: string) => boolean)
+  status?: number
+  body: string
+}
 
 /** 按 routes 顺序匹配的 mock fetch */
 function mockFetch(routes: Route[]): Fetcher {
-  return (async (url: string) => {
+  return (async (url: string, init?: RequestInit) => {
+    const reqBody = typeof init?.body === 'string' ? init.body : ''
     for (const r of routes) {
-      const hit = typeof r.match === 'string' ? url.includes(r.match) : r.match.test(url)
+      const hit = typeof r.match === 'string' ? url.includes(r.match)
+        : typeof r.match === 'function' ? r.match(url, reqBody)
+        : r.match.test(url)
       if (hit) return new Response(r.body, { status: r.status ?? 200 })
     }
     return new Response('not found', { status: 404 })
   }) as unknown as Fetcher
 }
 
-const ZHIPU_OK = {
-  match: 'bigmodel.cn',
-  body: JSON.stringify({ content: [{ type: 'text', text: '## 重大发布\n\n今天我们宣布[新文档](https://example.com/docs)正式上线,支持 **多模态** 输入。' }] }),
-}
+/** 智谱 mock 单路:按请求体 system 提示词标记路由 */
+const zhipuRoute = (systemMark: string, text: string): Route => ({
+  match: (url, reqBody) => url.includes('bigmodel.cn') && reqBody.includes(systemMark),
+  body: JSON.stringify({ content: [{ type: 'text', text }] }),
+})
+
+/** 智谱 mock 三路:翻译 / AI 总结 / 标签提炼(手动爬取管线依次调用) */
+const ZHIPU_ROUTES: Route[] = [
+  zhipuRoute('专业技术翻译', '## 重大发布\n\n今天我们宣布[新文档](https://example.com/docs)正式上线,支持 **多模态** 输入。'),
+  zhipuRoute('资深技术编辑', '- **多模态上线**:新文档与多模态输入正式发布,支持图像理解\n- **生态**:配套文档与示例同步更新'),
+  zhipuRoute('内容运营', '["多模态","产品发布","Example"]'),
+]
 
 const ARTICLE_PAGE = `<html><body>
 <span class="lbl mono">来源</span><span class="src" style="cursor:default">Example Corp</span>
@@ -89,7 +105,7 @@ function happyFetch(): Fetcher {
     { match: 'best.xiaohu.ai/article/test-one', body: ARTICLE_PAGE },
     { match: /\.md$/, status: 404, body: '' },          // .md 捷径失败
     { match: 'example.com/post', body: UPSTREAM_HTML }, // HTML 兜底
-    ZHIPU_OK,
+    ...ZHIPU_ROUTES,
   ])
 }
 
@@ -258,13 +274,12 @@ describe('runAggregation 全链路(mock 网络)', () => {
     expect(item.upstreamUrl).toBe('https://example.com/post')
     expect(item.sourceName).toBe('Example Corp')
 
-    // 文章已写入,含来源 blockquote、翻译正文、聚合标签
+    // 文章已写入,含来源 blockquote、翻译正文;会员优先挂「会员」标签,不再加「聚合」
     const file = path.join(articlesDir, 'test-one.md')
     expect(fs.existsSync(file)).toBe(true)
     const raw = fs.readFileSync(file, 'utf-8')
-    expect(raw).toContain('tags: [')
-    expect(raw).toContain('聚合')
-    expect(raw).toContain('会员') // 会员文章(rssXml 条目带会员推广尾)优先挂「会员」标签
+    expect(raw).toMatch(/tags: \["会员", "产品发布", "Example"\]/)
+    expect(raw).not.toMatch(/tags: \[[^\]]*"聚合"/) // 系统不再追加「聚合」标签
     expect(raw).toContain('> **原文链接**: [https://example.com/post]')
     expect(raw).toContain('重大发布') // 翻译后的正文已入文
 
@@ -299,7 +314,7 @@ describe('runAggregation 全链路(mock 网络)', () => {
       { match: 'best.xiaohu.ai/article/window-fresh', body: ARTICLE_PAGE },
       { match: /\.md$/, status: 404, body: '' },
       { match: 'example.com/post', body: UPSTREAM_HTML },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
 
     const report = await runAggregation('manual', { fetcher, now })
@@ -324,7 +339,7 @@ describe('runAggregation 全链路(mock 网络)', () => {
       { match: 'rss.xml', body: xml },
       { match: 'best.xiaohu.ai/article/fail-case', body: page },
       { match: 'down.example.com', status: 500, body: 'boom' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
 
     const report = await runAggregation('manual', { fetcher })
@@ -341,7 +356,7 @@ describe('runAggregation 全链路(mock 网络)', () => {
   it('并发触发被运行锁拒绝(回归:catchup 与手动触发曾重叠互抢配额)', async () => {
     const fetcher = mockFetch([
       { match: 'rss.xml', body: rssXml(false) }, // 空列表,第一次运行也快速结束
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const [a, b] = await Promise.allSettled([
       runAggregation('manual', { fetcher }),
@@ -414,7 +429,7 @@ describe('runMemberAggregation(会员文章,无阅读原文→网络搜索)', ()
       { match: 'duckduckgo.com', body: `<a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fhiggsfield.ai%2Fmcp%2Fbundles%2Fproduction-skills">Higgsfield</a>` },
       { match: /\.md$/, status: 404, body: '' },
       { match: 'higgsfield.ai/mcp', body: UPSTREAM_HTML },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const report = await runMemberAggregation('manual', {
       fetcher,
@@ -441,7 +456,7 @@ describe('crawlAndPublish', () => {
     const fetcher = mockFetch([
       { match: /\.md$/, status: 404, body: '' },
       { match: 'example.com/manual', body: UPSTREAM_HTML },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const res = await crawlAndPublish('https://example.com/manual', { fetcher })
     expect(res.slug).toBeTruthy()
@@ -450,10 +465,70 @@ describe('crawlAndPublish', () => {
     expect(fs.readFileSync(file, 'utf-8')).toContain('管理台手动提交')
   }, 30_000)
 
+  it('AI 总结区:插在元信息与原文之间,标签 = 用户输入 + AI 提炼 + 聚合,摘要取总结纯文本', async () => {
+    const fetcher = mockFetch([
+      { match: /\.md$/, status: 404, body: '' },
+      { match: 'example.com/ai-sum', body: UPSTREAM_HTML },
+      ...ZHIPU_ROUTES,
+    ])
+    const res = await crawlAndPublish('https://example.com/ai-sum', { tags: ['Gemini'], fetcher })
+    expect(res.summarized).toBe(true)
+    const raw = fs.readFileSync(path.join(articlesDir, `${res.slug}.md`), 'utf-8')
+    // 结构:frontmatter → 元信息引用块 → AI 总结区 → 分隔线 → 原文
+    const atMeta = raw.indexOf('**发现于**')
+    const atSummary = raw.indexOf('## AI 总结')
+    const atSummaryBody = raw.indexOf('- **多模态上线**')
+    const atContent = raw.indexOf('今天我们宣布') // 翻译 mock 返回的正文
+    expect(atMeta).toBeGreaterThan(0)
+    expect(atSummary).toBeGreaterThan(atMeta)
+    expect(atSummaryBody).toBeGreaterThan(atSummary)
+    expect(atContent).toBeGreaterThan(atSummaryBody)
+    // 标签合并:用户「Gemini」优先,AI 基于总结提炼的标签随后补足(无「聚合」系统标签)
+    expect(raw).toMatch(/tags: \["Gemini", "多模态", "产品发布", "Example"\]/)
+    // frontmatter 摘要取 AI 总结纯文本(非正文前 120 字)
+    expect(raw).toMatch(/summary: "多模态上线 :新文档与多模态输入正式发布,支持图像理解/)
+  }, 30_000)
+
+  it('AI 总结生成失败:降级发布(无总结区、仅用户标签 + 聚合),文章仍成功', async () => {
+    const fetcher = mockFetch([
+      { match: /\.md$/, status: 404, body: '' },
+      { match: 'example.com/ai-fail', body: UPSTREAM_HTML },
+      // 仅翻译路由可用;总结/标签路由不命中 → 智谱 404 → 降级链全失败 → 总结降级
+      ZHIPU_ROUTES[0],
+    ])
+    const res = await crawlAndPublish('https://example.com/ai-fail', { tags: ['手填标签'], fetcher })
+    expect(res.slug).toBeTruthy()
+    expect(res.summarized).toBe(false)
+    const raw = fs.readFileSync(path.join(articlesDir, `${res.slug}.md`), 'utf-8')
+    expect(raw).not.toContain('## AI 总结')
+    expect(raw).toMatch(/tags: \["手填标签"\]/)
+  }, 60_000)
+
+  it('手动填写 AI 总结:跳过 LLM 生成,总结区原样使用;标签仍由 LLM 基于手填总结提炼', async () => {
+    const manual = '- **手填要点**:这是手动写的 Markdown 总结,含 [链接](https://example.com)'
+    const fetcher = mockFetch([
+      { match: /\.md$/, status: 404, body: '' },
+      { match: 'example.com/manual-sum', body: UPSTREAM_HTML },
+      // 仅翻译 + 标签路由,故意不配总结生成路由:若误调生成,生成失败会让总结区消失,断言可拦截
+      zhipuRoute('专业技术翻译', '## 重大发布\n\n今天我们宣布[新文档](https://example.com/docs)正式上线,支持 **多模态** 输入。'),
+      zhipuRoute('内容运营', '["文档转换","CLI 工具"]'),
+    ])
+    const res = await crawlAndPublish('https://example.com/manual-sum', { summary: manual, fetcher })
+    expect(res.summarized).toBe(true)
+    const raw = fs.readFileSync(path.join(articlesDir, `${res.slug}.md`), 'utf-8')
+    // 总结区 = 手填 Markdown 原样(含链接语法)
+    expect(raw).toContain('## AI 总结')
+    expect(raw).toContain('- **手填要点**:这是手动写的 Markdown 总结,含 [链接](https://example.com)')
+    // 标签仍由 LLM 基于总结提炼(无用户标签,仅 AI 标签;无「聚合」系统标签)
+    expect(raw).toMatch(/tags: \["文档转换", "CLI 工具"\]/)
+    // frontmatter 摘要取手填总结纯文本
+    expect(raw).toMatch(/summary: "手填要点 :这是手动写的 Markdown 总结,含 链接"/)
+  }, 30_000)
+
   it('GitHub 仓库链接走 README 通道', async () => {
     const fetcher = mockFetch([
       { match: 'api.github.com/repos/foo/bar/readme', body: '# Bar Project\n\nA useful tool.' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const res = await crawlAndPublish('https://github.com/foo/bar', { title: 'Bar 项目', fetcher })
     expect(res.slug).toBe('bar')
@@ -529,10 +604,13 @@ describe('fetchUpstreamMarkdown · 白名单站点直连代理', () => {
   /** 记录每次请求 URL 的 mock fetch:是否打过直连只能看 calls(未命中路由一律 404) */
   function recordingFetch(routes: Route[]): Fetcher {
     calls = []
-    return (async (url: string) => {
+    return (async (url: string, init?: RequestInit) => {
       calls.push(url)
+      const reqBody = typeof init?.body === 'string' ? init.body : ''
       for (const r of routes) {
-        const hit = typeof r.match === 'string' ? url.includes(r.match) : r.match.test(url)
+        const hit = typeof r.match === 'string' ? url.includes(r.match)
+          : typeof r.match === 'function' ? r.match(url, reqBody)
+          : r.match.test(url)
         if (hit) return new Response(r.body, { status: r.status ?? 200 })
       }
       return new Response('not found', { status: 404 })
@@ -602,7 +680,7 @@ describe('fetchUpstreamMarkdown · 白名单站点直连代理', () => {
       { match: 'rss.xml', body: rssXml(true) },
       { match: 'best.xiaohu.ai/article/test-one', body: tweetPage },
       { match: 'proxy.example.com/fetch', body: TWEET_TEXT },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const report = await runAggregation('manual', { fetcher })
     expect(report.published).toBe(1)
@@ -762,7 +840,7 @@ describe('runMemberAggregation(24 小时窗口端到端)', () => {
       { match: 'duckduckgo.com', body: `<a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fsrc.example.com%2Fskill">Test Src</a>` },
       { match: /\.md$/, status: 404, body: '' },
       { match: 'src.example.com', body: UPSTREAM_HTML },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
 
     const now = new Date('2026-09-28T12:00:00Z') // 北京 20:00,窗口 = 09-27 起
@@ -871,7 +949,7 @@ describe('processedUrls 写入去重', () => {
       { match: 'duckduckgo.com', body: `<a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fsrc.example.com%2Fx">Test Src</a>` },
       { match: /\.md$/, status: 404, body: '' },
       { match: 'src.example.com', body: UPSTREAM_HTML },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const report = await runMemberAggregation('manual', { fetcher, urls: [url] })
     expect(report.published).toBe(1)
@@ -907,7 +985,7 @@ describe('分级兜底(上游多次抓取失败后的降级路线)', () => {
       { match: 'rss.xml', body: rssOne('tier-free', false) },
       { match: 'best.xiaohu.ai/article/tier-free', body: xiaohuPage('https://closed.example.com/x', '免费篇') },
       { match: 'closed.example.com', status: 403, body: '' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const report = await runAggregation('manual', { fetcher })
     expect(report.published).toBe(1)
@@ -929,7 +1007,7 @@ describe('分级兜底(上游多次抓取失败后的降级路线)', () => {
       { match: 'rss.xml', body: rssOne('tier-cdp-xiaohu', false) },
       { match: 'best.xiaohu.ai/article/tier-cdp-xiaohu', body: stubPage },
       { match: 'closed.example.com', status: 403, body: '' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const browserFetcher = async (url: string) => {
       expect(url).toContain('best.xiaohu.ai/article/tier-cdp-xiaohu')
@@ -951,7 +1029,7 @@ describe('分级兜底(上游多次抓取失败后的降级路线)', () => {
       { match: 'best.xiaohu.ai/article/tier-member-cdp', body: memberPage },
       { match: 'duckduckgo.com', body: `<a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fsrc.example.com%2Fdoc">Test Src</a>` },
       { match: 'src.example.com', status: 404, body: '' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     const browserFetcher = async (url: string) => {
       expect(url).toBe('https://src.example.com/doc') // 会员兜底爬的是上游原文,不是小互页
@@ -979,7 +1057,7 @@ describe('分级兜底(上游多次抓取失败后的降级路线)', () => {
       { match: 'best.xiaohu.ai/article/tier-member-xiaohu', body: xiaohuPage },
       { match: 'duckduckgo.com', body: `<a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fsrc.example.com%2Fdoc">Test Src</a>` },
       { match: 'src.example.com', status: 404, body: '' },
-      ZHIPU_OK,
+      ...ZHIPU_ROUTES,
     ])
     // CDP 爬上游原文(登录墙)拿不到;但小互页纯 HTTP 可读
     const browserFetcher = async (url: string) => { throw new Error('CDP 渲染失败: 登录墙') }

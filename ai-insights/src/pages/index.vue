@@ -8,7 +8,7 @@ const { data } = await useFetch<{ total: number; page: number; pageSize: number;
   query: { page, pageSize: 10 },
 })
 
-useHead({ title: 'AIHot · AI 热点洞察' })
+useHead({ title: 'AIHot汪 · AI 热点洞察' })
 </script>
 
 <template>

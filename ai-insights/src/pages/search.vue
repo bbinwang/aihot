@@ -17,7 +17,7 @@ function submit() {
   if (keyword) router.push({ path: '/search', query: { q: keyword } })
 }
 
-useHead({ title: () => (q.value ? `搜索“${q.value}” · AIHot` : '搜索 · AIHot') })
+useHead({ title: () => (q.value ? `搜索“${q.value}” · AIHot汪` : '搜索 · AIHot汪') })
 </script>
 
 <template>
