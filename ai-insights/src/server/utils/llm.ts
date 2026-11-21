@@ -181,23 +181,38 @@ export async function llmComplete(opts: {
   const fetcher = opts.fetcher || (globalThis.fetch as unknown as Fetcher)
   const maxTokens = opts.maxTokens ?? 8192
   const zhipuAvailable = ZHIPU_KEY() && Date.now() >= zhipuBlockedUntil
+  /** 各级降级原因,最终失败时随错误抛出,前端/日志均可见 */
+  const degradations: string[] = []
 
   if (zhipuAvailable) {
     try {
       const text = await callZhipu(opts.system, opts.user, maxTokens, fetcher)
       return { text, engine: 'zhipu', model: TRANSLATE_MODEL() }
-    } catch {
-      // 降级:OpenRouter → 本地
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      degradations.push(`智谱: ${msg}`)
+      console.warn(`[llm] 智谱调用失败,降级: ${msg}`)
     }
+  } else if (!ZHIPU_KEY()) {
+    degradations.push('智谱: 未配置 ZHIPU_API_KEY')
+  } else {
+    degradations.push(`智谱: 限流熔断中,${new Date(zhipuBlockedUntil).toISOString()} 后重试`)
   }
   if (OPENROUTER_KEY()) {
     try {
       const text = await callOpenRouter(opts.system, opts.user, maxTokens, fetcher)
       return { text, engine: 'openrouter', model: OPENROUTER_MODEL() }
-    } catch {
-      // 降级本地
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      degradations.push(`OpenRouter: ${msg}`)
+      console.warn(`[llm] OpenRouter 调用失败,降级本地: ${msg}`)
     }
   }
-  const local = await callLocal(opts.system, opts.user, maxTokens, fetcher)
-  return { text: local.text, engine: 'local', model: local.model }
+  try {
+    const local = await callLocal(opts.system, opts.user, maxTokens, fetcher)
+    return { text: local.text, engine: 'local', model: local.model }
+  } catch (err) {
+    const localMsg = err instanceof Error ? err.message : String(err)
+    throw new Error(`所有 LLM 后端失败。降级链 → ${degradations.join(' | ')} | ${localMsg}`)
+  }
 }

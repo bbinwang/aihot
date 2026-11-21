@@ -485,6 +485,13 @@ img { max-width: 100%; }
 .form-field textarea.code { font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; }
 .form-actions { margin-top: 16px; display: flex; align-items: center; gap: 14px; }
 .form-tip { font-size: 12.5px; color: var(--text-3); }
+.checkbox-label {
+  display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text);
+  cursor: pointer; user-select: none;
+}
+.checkbox-label input[type="checkbox"] {
+  width: 16px; height: 16px; padding: 0; cursor: pointer;
+}
 .file-hint { font-size: 12px; color: var(--text-3); }
 
 .admin-result {
@@ -597,6 +604,9 @@ img { max-width: 100%; }
 .agg-failed-links a { color: var(--accent); font-size: 13px; }
 
 .agg-detail { background: var(--bg-2, var(--bg)); padding: 8px 12px !important; }
+/* 抓取任务管理:错误行(错误文本 + 复制按钮)横向排布,长错误可换行 */
+.crawl-error-cell { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.crawl-error-cell .agg-error { flex: 1; min-width: 240px; word-break: break-all; white-space: pre-wrap; }
 .agg-item {
   display: flex;
   align-items: baseline;

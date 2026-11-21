@@ -37,12 +37,16 @@ export default defineEventHandler(async (event) => {
   if (Array.isArray(body.tags)) tags = body.tags.map(String)
   else if (typeof body.tags === 'string' && body.tags.trim()) tags = body.tags.split(/[,，]/).map(s => s.trim())
 
+  /** 是否爬取原文:默认 true。取消后仅用提供的 AI 总结发布,不抓取上游内容 */
+  const fetchOriginal = body.fetchOriginal !== false
+
   let task
   try {
     task = startCrawlTask(url, {
       title: typeof body.title === 'string' ? body.title : undefined,
       tags,
       summary: typeof body.summary === 'string' ? body.summary : undefined,
+      fetchOriginal,
     })
   } catch (err) {
     throw createError({ statusCode: 400, statusMessage: err instanceof Error ? err.message : '任务创建失败' })

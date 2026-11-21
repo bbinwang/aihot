@@ -1305,11 +1305,14 @@ export async function runScheduledAggregation(
  * 留空由 LLM 基于翻译正文生成)→ 标签提炼(基于总结区)→ 发布。
  * 最终文章 = 标题 + 元信息 + 总结区 + 抓取原文;标签 = 用户输入优先,AI 基于总结区
  * 提炼补足(合并去重,上限 8);AI 生成失败时降级为无总结区、仅用户标签。
+ *
+ * fetchOriginal=false:不抓取上游原文,仅用提供的 AI 总结发布,文章仅含总结区与元信息。
  */
 export async function crawlAndPublish(
   url: string,
-  opts: { title?: string; tags?: string[]; summary?: string; fetcher?: Fetcher } = {},
+  opts: { title?: string; tags?: string[]; summary?: string; fetcher?: Fetcher; fetchOriginal?: boolean } = {},
 ): Promise<{ slug: string; translated: boolean; summarized: boolean }> {
+  const fetchOriginal = opts.fetchOriginal !== false
   let parsed: URL
   try {
     parsed = new URL(url)
@@ -1318,17 +1321,48 @@ export async function crawlAndPublish(
   }
   if (!/^https?:$/.test(parsed.protocol)) throw new Error('仅支持 http/https 链接')
 
+  const title = (opts.title || '').trim() || parsed.hostname
+
+  if (!fetchOriginal) {
+    // 不抓取原文:仅用提供的 AI 总结发布
+    const manualSummary = (opts.summary || '').trim().slice(0, 5000)
+    if (!manualSummary) throw new Error('未勾选"爬取原文"时,AI 总结不能为空,请填写后重试')
+    // 标签提炼:用户标签 + AI 基于总结区提炼
+    const tags = Array.from(new Set(opts.tags || []))
+    let aiTags: string[] = []
+    try {
+      aiTags = await extractTags(manualSummary, { fetcher: opts.fetcher })
+    } catch (err) {
+      console.warn(`[aggregator] 标签提炼失败(仅跳过 AI 标签): ${err instanceof Error ? err.message : err}`)
+    }
+    const finalTags = Array.from(new Set([...tags, ...aiTags])).slice(0, 8)
+    const body = composeBody({
+      upstreamUrl: url,
+      sourceName: parsed.hostname,
+      viaLabel: '管理台手动提交',
+      pubDate: undefined,
+      translated: false,
+      content: '',
+      aiSummary: manualSummary,
+    })
+    const meta = createArticle({
+      title: title.slice(0, 100),
+      markdown: body,
+      tags: finalTags,
+      summary: plainText(manualSummary).replace(/\s+/g, ' ').trim().slice(0, 120),
+    })
+    return { slug: meta.slug, translated: false, summarized: !!manualSummary }
+  }
+
   const upstream = await fetchUpstreamMarkdown(url, opts)
-  const title = (opts.title || '').trim() ||
-    upstream.markdown.match(/^#\s+(.+)$/m)?.[1]?.trim() ||
-    parsed.hostname
-  // 标签 = 用户输入 + AI 基于总结区提炼;不再追加「聚合」系统标签
+  const titleFromContent = upstream.markdown.match(/^#\s+(.+)$/m)?.[1]?.trim()
+  const resolvedTitle = (opts.title || '').trim() || titleFromContent || parsed.hostname
   const tags = Array.from(new Set(opts.tags || []))
   // 手动填写的 AI 总结(Markdown):非空则跳过 LLM 生成;长度兜底防超长输入
   const manualSummary = (opts.summary || '').trim().slice(0, 5000)
 
   return publishFromUpstream({
-    title: title.slice(0, 100),
+    title: resolvedTitle.slice(0, 100),
     tags,
     summary: '',
     upstreamUrl: url,

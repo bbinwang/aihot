@@ -91,11 +91,12 @@ async function submit() {
 }
 
 /* ---------- 左侧功能菜单 ---------- */
-type AdminTab = 'articles' | 'agg' | 'tools'
+type AdminTab = 'articles' | 'agg' | 'tasks' | 'tools'
 const activeTab = ref<AdminTab>('articles')
 const menus: { key: AdminTab; icon: string; label: string }[] = [
   { key: 'articles', icon: '📚', label: '文章管理' },
   { key: 'agg', icon: '⚡', label: '聚合任务' },
+  { key: 'tasks', icon: '📋', label: '抓取任务' },
   { key: 'tools', icon: '🔧', label: '手动工具' },
 ]
 
@@ -123,7 +124,7 @@ function goPage(p: number) {
   loadList()
 }
 
-watch(authed, (v) => { if (v) { loadList(); loadAgg(); loadModels() } }, { immediate: true })
+watch(authed, (v) => { if (v) { loadList(); loadAgg(); loadModels(); loadTasks() } }, { immediate: true })
 
 async function remove(slug: string) {
   if (!confirm(`确认删除文章「${slug}」?不可恢复。`)) return
@@ -246,6 +247,8 @@ const crawlUrl = ref('')
 const crawlTitle = ref('')
 const crawlTags = ref('')
 const crawlSummary = ref('')
+/** 是否爬取原文:打钩=抓取上游内容并翻译;取消=不抓原文,仅用提供的 AI 总结发布 */
+const crawlFetchOriginal = ref(true)
 const crawling = ref(false)
 const crawlResult = ref<{ ok: boolean; msg: string; url?: string } | null>(null)
 
@@ -340,16 +343,14 @@ async function crawl(url?: string, title?: string) {
   try {
     // 抓取+翻译耗时数分钟,同步等待会被移动网络约 60s 空闲超时掐断(Failed to fetch),
     // 改为提交后立即返回 taskId,轮询 /api/admin/crawl/status 获取进度
-    const submit = await $fetch<{ ok: boolean; taskId: string }>('/api/admin/crawl', {
-      method: 'POST',
-      headers,
-      body: {
-        url: target,
-        title: title || crawlTitle.value || undefined,
-        tags: crawlTags.value || undefined,
-        summary: crawlSummary.value.trim() || undefined,
-      },
+    const taskId = await submitCrawlTask({
+      url: target,
+      title: title || crawlTitle.value || undefined,
+      tags: crawlTags.value || undefined,
+      summary: crawlSummary.value.trim() || undefined,
+      fetchOriginal: crawlFetchOriginal.value,
     })
+    loadTasks() // 任务管理页同步可见新任务
     const startedAt = Date.now()
     let pollFails = 0
     for (;;) {
@@ -359,7 +360,7 @@ async function crawl(url?: string, title?: string) {
       }
       let st: any
       try {
-        st = await $fetch<any>('/api/admin/crawl/status', { headers, query: { taskId: submit.taskId } })
+        st = await $fetch<any>('/api/admin/crawl/status', { headers, query: { taskId } })
         pollFails = 0
       } catch (e: any) {
         if (e?.status === 404 || e?.statusCode === 404 || e?.data?.statusCode === 404) {
@@ -371,26 +372,186 @@ async function crawl(url?: string, title?: string) {
       }
       if (st.status === 'running') {
         const secs = Math.round((Date.now() - startedAt) / 1000)
-        crawlResult.value = { ok: true, msg: `后台执行中… 已等待 ${secs}s(抓取+翻译+AI 总结约需数分钟,可保持页面打开)` }
+        crawlResult.value = {
+          ok: true,
+          msg: st.fetchOriginal !== false
+            ? `后台执行中… 已等待 ${secs}s(抓取+翻译+AI 总结约需数分钟,可保持页面打开)`
+            : `后台执行中… 已等待 ${secs}s(仅生成 AI 总结与标签,约需数分钟,可保持页面打开)`,
+        }
         continue
       }
       if (st.status === 'done') {
-        crawlResult.value = {
-          ok: true,
-          msg: `发布成功:${st.slug}${st.translated ? '(已翻译)' : '(原文即中文)'}${st.summarized ? ' · 含 AI 总结与提炼标签' : ' · AI 总结生成失败(已降级发布)'}`,
-          url: st.articleUrl,
+        if (st.fetchOriginal === false) {
+          crawlResult.value = {
+            ok: true,
+            msg: `发布成功:${st.slug}${st.summarized ? ' · 含 AI 总结与提炼标签' : ' · AI 总结生成失败(已降级发布)'}`,
+            url: st.articleUrl,
+          }
+        } else {
+          crawlResult.value = {
+            ok: true,
+            msg: `发布成功:${st.slug}${st.translated ? '(已翻译)' : '(原文即中文)'}${st.summarized ? ' · 含 AI 总结与提炼标签' : ' · AI 总结生成失败(已降级发布)'}`,
+            url: st.articleUrl,
+          }
         }
         break
       }
       throw new Error(st.error || '爬取失败')
     }
     if (!url) crawlUrl.value = crawlTitle.value = crawlTags.value = crawlSummary.value = ''
+    crawlFetchOriginal.value = true
     await loadList()
+    loadTasks() // 终态落定,任务列表同步刷新
   } catch (e: any) {
     crawlResult.value = { ok: false, msg: e?.data?.statusMessage || e?.message || '爬取失败' }
+    loadTasks()
   } finally {
     crawling.value = false
   }
+}
+
+/* ---------- 抓取任务管理(手动爬取的任务列表/重试) ---------- */
+interface CrawlTaskView {
+  id: string
+  url: string
+  status: 'running' | 'done' | 'error'
+  startedAt: number
+  finishedAt?: number
+  slug?: string
+  translated?: boolean
+  summarized?: boolean
+  fetchOriginal?: boolean
+  error?: string
+  title?: string
+  tags?: string[]
+  summary?: string
+  articleUrl?: string
+}
+const crawlTasks = ref<CrawlTaskView[]>([])
+const tasksLoading = ref(false)
+const runningTasks = computed(() => crawlTasks.value.filter(t => t.status === 'running').length)
+
+async function loadTasks() {
+  tasksLoading.value = true
+  try {
+    const res = await $fetch<{ ok: boolean; items: CrawlTaskView[] }>('/api/admin/crawl/tasks', {
+      headers: { 'x-admin-password': password.value },
+    })
+    crawlTasks.value = res.items
+  } catch { /* 静默失败:手动刷新与 5s 轮询会再试 */ }
+  finally { tasksLoading.value = false }
+}
+
+// 任务页打开期间每 5s 自动刷新(运行中任务的进度跟踪);组件卸载即停
+let tasksTimer: ReturnType<typeof setInterval> | undefined
+onMounted(() => {
+  tasksTimer = setInterval(() => {
+    if (authed.value && activeTab.value === 'tasks') loadTasks()
+  }, 5000)
+})
+onUnmounted(() => { if (tasksTimer) clearInterval(tasksTimer) })
+
+/** 提交抓取任务(手动表单/直接重试/编辑后重试共用),成功返回 taskId */
+async function submitCrawlTask(body: Record<string, unknown>): Promise<string> {
+  const res = await $fetch<{ ok: boolean; taskId: string }>('/api/admin/crawl', {
+    method: 'POST',
+    headers: { 'x-admin-password': password.value },
+    body,
+  })
+  return res.taskId
+}
+
+/** 复制错误文本到剪切板;http 环境 clipboard API 不可用时 execCommand 降级 */
+const copiedTaskId = ref('')
+async function copyTaskError(t: CrawlTaskView) {
+  const text = t.error || ''
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+    } else {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.cssText = 'position:fixed;opacity:0'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(ta)
+      if (!ok) throw new Error('execCommand 复制失败')
+    }
+    copiedTaskId.value = t.id
+    setTimeout(() => { if (copiedTaskId.value === t.id) copiedTaskId.value = '' }, 1500)
+  } catch {
+    alert('复制失败,请手动选中错误文本复制')
+  }
+}
+
+/** 直接重试:按原参数原样重新提交,生成新任务(原失败记录保留为历史) */
+const retryingTaskId = ref('')
+async function retryTask(t: CrawlTaskView) {
+  retryingTaskId.value = t.id
+  try {
+    await submitCrawlTask({
+      url: t.url,
+      title: t.title || undefined,
+      tags: t.tags?.length ? t.tags : undefined,
+      summary: t.summary || undefined,
+      fetchOriginal: t.fetchOriginal !== false,
+    })
+    editingTask.value = null
+    await loadTasks()
+  } catch (e: any) {
+    alert(e?.data?.statusMessage || e?.message || '重试失败')
+  } finally {
+    retryingTaskId.value = ''
+  }
+}
+
+/** 编辑后重试:回填原参数,允许修改后再提交 */
+const editingTask = ref<CrawlTaskView | null>(null)
+const editTUrl = ref('')
+const editTTitle = ref('')
+const editTTags = ref('')
+const editTSummary = ref('')
+const editTFetchOriginal = ref(true)
+const editTSubmitting = ref(false)
+
+function startTaskEdit(t: CrawlTaskView) {
+  editingTask.value = t
+  editTUrl.value = t.url
+  editTTitle.value = t.title || ''
+  editTTags.value = (t.tags || []).join(', ')
+  editTSummary.value = t.summary || ''
+  editTFetchOriginal.value = t.fetchOriginal !== false
+}
+
+function toggleTaskEdit(t: CrawlTaskView) {
+  if (editingTask.value && editingTask.value.id === t.id) editingTask.value = null
+  else startTaskEdit(t)
+}
+
+async function submitEditedTask() {
+  if (!editTUrl.value.trim()) return
+  editTSubmitting.value = true
+  try {
+    await submitCrawlTask({
+      url: editTUrl.value.trim(),
+      title: editTTitle.value.trim() || undefined,
+      tags: editTTags.value.trim() || undefined,
+      summary: editTSummary.value.trim() || undefined,
+      fetchOriginal: editTFetchOriginal.value,
+    })
+    editingTask.value = null
+    await loadTasks()
+  } catch (e: any) {
+    alert(e?.data?.statusMessage || e?.message || '提交失败')
+  } finally {
+    editTSubmitting.value = false
+  }
+}
+
+/** 任务列表链接展示:去协议、去尾斜杠并截断 */
+function shortUrl(u: string): string {
+  return u.replace(/^https?:\/\//, '').replace(/\/+$/, '').slice(0, 60) || u
 }
 
 function fmtTime(iso?: string | null): string {
@@ -718,6 +879,114 @@ const failedItems = computed<RunItem[]>(() => {
           </table>
         </section>
 
+        <!-- ========== 抓取任务管理 ========== -->
+        <template v-else-if="activeTab === 'tasks'">
+        <section class="admin-section">
+          <h2>📋 抓取任务管理</h2>
+          <p class="admin-hint">
+            手动爬取提交后的全部任务在此跟踪:页面打开时每 5 秒自动刷新,也可手动刷新。
+            失败任务支持「直接重试」或回填参数「编辑后重试」;任务为进程内存态,服务重启后清空(终态任务保留约 2 小时)。
+          </p>
+          <div class="form-actions">
+            <button class="btn btn-plain" :disabled="tasksLoading" @click="loadTasks">
+              {{ tasksLoading ? '刷新中…' : '↻ 刷新' }}
+            </button>
+            <span class="form-tip">共 {{ crawlTasks.length }} 个任务 · 运行中 {{ runningTasks }} 个</span>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr><th>提交时间</th><th>链接 / 标题</th><th>参数</th><th>状态</th><th>耗时</th><th>操作</th></tr>
+            </thead>
+            <tbody>
+              <template v-for="t in crawlTasks" :key="t.id">
+                <tr>
+                  <td>{{ fmtTime(new Date(t.startedAt).toISOString()) }}</td>
+                  <td>
+                    <a :href="t.url" target="_blank" rel="noopener" class="link">{{ shortUrl(t.url) }}</a>
+                    <div v-if="t.title" class="agg-src">{{ t.title }}</div>
+                  </td>
+                  <td>
+                    <span class="chip" :class="t.fetchOriginal === false ? 'chip-skipped' : 'chip-fetch-upstream-http'">
+                      {{ t.fetchOriginal === false ? '仅总结' : '爬原文' }}
+                    </span>
+                    <span v-for="tag in t.tags || []" :key="tag" class="agg-src">#{{ tag }}</span>
+                  </td>
+                  <td>
+                    <span class="chip" :class="t.status === 'done' ? 'chip-published' : t.status === 'running' ? 'chip-fetch' : 'chip-proxy-error'">
+                      {{ { running: '⏳ 运行中', done: '✓ 完成', error: '✗ 失败' }[t.status] }}
+                    </span>
+                    <NuxtLink v-if="t.status === 'done' && t.articleUrl" class="link" :to="t.articleUrl" target="_blank">查看 ↗</NuxtLink>
+                  </td>
+                  <td>{{ fmtDuration((t.finishedAt || Date.now()) - t.startedAt) }}</td>
+                  <td class="row-actions">
+                    <template v-if="t.status === 'error'">
+                      <button class="btn btn-plain" :disabled="retryingTaskId === t.id" @click="retryTask(t)">
+                        {{ retryingTaskId === t.id ? '重试中…' : '直接重试' }}
+                      </button>
+                      <button class="btn btn-plain" @click="toggleTaskEdit(t)">
+                        {{ editingTask && editingTask.id === t.id ? '收起编辑' : '编辑后重试' }}
+                      </button>
+                    </template>
+                    <span v-else class="empty-tip">—</span>
+                  </td>
+                </tr>
+                <tr v-if="t.error">
+                  <td colspan="6" class="agg-detail crawl-error-cell">
+                    <span class="agg-error">{{ t.error }}</span>
+                    <button class="btn btn-plain" type="button" @click="copyTaskError(t)">
+                      {{ copiedTaskId === t.id ? '✓ 已复制' : '⧉ 复制错误' }}
+                    </button>
+                  </td>
+                </tr>
+                <tr v-if="editingTask && editingTask.id === t.id">
+                  <td colspan="6" class="agg-detail">
+                    <div class="form-grid">
+                      <div class="form-field full">
+                        链接 *
+                        <input v-model="editTUrl" type="url" placeholder="https://…" />
+                      </div>
+                      <div class="form-field">
+                        标题(留空自动取原文标题)
+                        <input v-model="editTTitle" type="text" placeholder="自动识别" />
+                      </div>
+                      <div class="form-field">
+                        标签(逗号分隔,留空由 AI 提炼)
+                        <input v-model="editTTags" type="text" placeholder="如:Gemini, 发布" />
+                      </div>
+                      <div class="form-field">
+                        <label class="checkbox-label">
+                          <input type="checkbox" v-model="editTFetchOriginal" />
+                          <span>爬取原文</span>
+                        </label>
+                        <span class="form-tip">取消后仅用 AI 总结发布</span>
+                      </div>
+                      <div class="form-field full">
+                        AI 总结({{ editTFetchOriginal ? '选填,留空由 AI 生成' : '必填' }})
+                        <textarea v-model="editTSummary" class="code" placeholder="Markdown 格式总结;取消「爬取原文」时必填" />
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button
+                        class="btn"
+                        :disabled="editTSubmitting || !editTUrl.trim() || (!editTFetchOriginal && !editTSummary.trim())"
+                        @click="submitEditedTask"
+                      >
+                        {{ editTSubmitting ? '提交中…' : '保存并重试' }}
+                      </button>
+                      <button class="btn btn-plain" :disabled="editTSubmitting" @click="editingTask = null">取消</button>
+                      <span class="form-tip">按修改后的参数生成新任务,原失败记录保留为历史</span>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+              <tr v-if="!crawlTasks.length">
+                <td colspan="6" class="empty-tip" style="padding: 24px 0">暂无任务;到「手动工具」提交手动爬取</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        </template>
+
         <!-- ========== 手动工具 ========== -->
         <template v-else>
         <!-- 会员文章实验 -->
@@ -749,7 +1018,7 @@ const failedItems = computed<RunItem[]>(() => {
         <!-- 手动爬取(P2) -->
         <section class="admin-section">
           <h2>🔗 手动爬取翻译</h2>
-          <p class="admin-hint">输入任意文章/仓库链接,自动抓取原文 → GLM 翻译为中文 →「AI 总结」区(下方手动填写优先,留空由 AI 生成)→ AI 基于总结提炼标签 → 发布(文章 = AI 总结区 + 原文;失败项可在「聚合任务」页「待人工处理」重爬)。</p>
+          <p class="admin-hint">输入任意文章/仓库链接,抓取原文 → GLM 翻译为中文 →「AI 总结」区(下方手动填写优先,留空由 AI 生成)→ AI 基于总结提炼标签 → 发布。取消「爬取原文」则仅用提供的 AI 总结发布,不抓取上游内容。</p>
           <div class="form-grid">
             <div class="form-field full">
               链接 *
@@ -763,23 +1032,32 @@ const failedItems = computed<RunItem[]>(() => {
               标签(逗号分隔,留空由 AI 基于总结提炼)
               <input v-model="crawlTags" type="text" placeholder="如:Gemini, 发布" />
             </div>
-            <div class="form-field full">
-              AI 总结(Markdown 格式,留空由 AI 基于原文自动生成)
+            <div class="form-field">
+              <label class="checkbox-label">
+                <input type="checkbox" v-model="crawlFetchOriginal" />
+                <span>爬取原文</span>
+              </label>
+              <span class="form-tip">取消后仅用下方 AI 总结发布,不抓取上游内容</span>
+            </div>
+            <div class="form-field full" :class="{ 'full': true, 'ai-summary-section': !crawlFetchOriginal }">
+              AI 总结(Markdown 格式{{ crawlFetchOriginal ? ',留空由 AI 基于原文自动生成' : ' * 必填' }})
               <textarea
                 v-model="crawlSummary"
                 class="code"
                 placeholder="支持 Markdown:&#10;- **要点一**:核心结论…&#10;- **要点二**:关键数据/产品名保留原文…&#10;&#10;填写后将跳过 AI 生成,直接作为文章的「AI 总结」区;标签仍由 AI 基于这段总结提炼"
               />
+              <span v-if="!crawlFetchOriginal" class="form-tip">未勾选"爬取原文",请填写 AI 总结后再提交</span>
             </div>
           </div>
           <div class="form-actions">
-            <button class="btn" :disabled="crawling || !crawlUrl.trim()" @click="crawl()">
-              {{ crawling ? '抓取翻译中…' : '抓取并发布' }}
+            <button class="btn" :disabled="crawling || !crawlUrl.trim() || (!crawlFetchOriginal && !crawlSummary.trim())" @click="crawl()">
+              {{ crawling ? (crawlFetchOriginal ? '抓取翻译中…' : '生成中…') : (crawlFetchOriginal ? '抓取并发布' : '总结并发布') }}
             </button>
           </div>
           <p v-if="crawlResult" class="admin-result" :class="crawlResult.ok ? 'ok' : 'err'">
             {{ crawlResult.msg }}
             <NuxtLink v-if="crawlResult.url" :to="crawlResult.url">→ 查看文章</NuxtLink>
+            <a href="#" @click.prevent="activeTab = 'tasks'">📋 任务管理 →</a>
           </p>
         </section>
 

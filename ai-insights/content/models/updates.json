@@ -1,5 +1,45 @@
 [
   {
+    "id": "mu-mwpz1xcx-h387",
+    "title": "Déjà View: Looping Transformers for Multi‑View 3D Reconstruction",
+    "description": "输入一组无序照片/视频，一次性前向推理完成多视图三维重建：输出相机位姿、深度图、3D点云PLY；不需要像NeRF/Gaussian‑Splatting那样对每个场景做单独训练优化。",
+    "sourceUrl": "https://huggingface.co/spaces/nvidia/dvlt 总结",
+    "category": "三维重建",
+    "date": "2026-11-21T05:32:55.713Z"
+  },
+  {
+    "id": "mu-mwovaxwl-mtsd",
+    "title": "Nemotron 3.5 Transcribe 登顶 Artificial Analysis 说话人分离榜",
+    "description": "Nemotron 3.5 Transcribe在 Artificial Analysis 新发布的Diarization Index以 3.3% 词级说话人错误率【排名第一】，领先 Voxtral Small Transcribe 3 的 7.5%，测试覆盖 2–8 人对话",
+    "sourceUrl": "https://x.com/NVIDIAAI/status/2122392904115327213",
+    "category": "语音模型",
+    "date": "2026-11-20T11:00:11.685Z"
+  },
+  {
+    "id": "mu-mwnp1dkl-ixjx",
+    "title": "tiny-voca：450 万参数全开放 TTS，CPU 上跑 70 倍实时",
+    "description": "",
+    "sourceUrl": "https://www.reddit.com/r/LocalLLaMA/comments/1xw7zrg/tinyvoca_a_fully_open_45mparameter_tts_code/",
+    "category": "语音模型",
+    "date": "2026-11-19T15:17:01.557Z"
+  },
+  {
+    "id": "mu-mwnoj14y-m6m2",
+    "title": "Bland 发布全双工语音到语音模型 Tofu-1",
+    "description": "Bland 发布Tofu-1（研究预览），直接处理音频输入输出，支持说话人跟踪、噪声分离和【中途打断】，面向车载、病房等嘈杂场景，但未公布参数与延迟。",
+    "sourceUrl": "https://www.marktechpost.com/2026/11/15/bland-tofu-1-full-duplex-speech-to-speech-model/?amp=1",
+    "category": "语音模型",
+    "date": "2026-11-19T15:02:45.634Z"
+  },
+  {
+    "id": "mu-mwd2kcz6-hlno",
+    "title": "NVIDIA发布Déjà View高效三维重建模型",
+    "description": "Déjà View仅117M参数，可从多视角照片恢复三维几何与相机位姿。五项基准达到或超过大十倍模型。",
+    "sourceUrl": "https://research.nvidia.com/labs/dvl/projects/dvlt/",
+    "category": "三维重建",
+    "date": "2026-11-12T04:50:14.322Z"
+  },
+  {
     "id": "mu-mwc6vaqg-xlu3",
     "title": "小红书开源dots.tts.edit V1.1语音编辑模型",
     "description": "dots.tts.edit V1.1支持局部修改文本、情绪、语速和停顿，并覆盖中英双语与多说话人编辑。",
